@@ -63,6 +63,7 @@ func SetColorValue(fieldPtr, keyPtr *C.char, valuePtr C.uintptr_t) {
 	value := cgo.Handle(valuePtr).Value().(lipgloss.Color)
 	color := reflect.ValueOf(value)
 	reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{color})
+	cgo.Handle(valuePtr).Delete()
 }
 
 //export SetIntValue
