@@ -1,10 +1,11 @@
-import { ptr } from 'bun:ffi'
+import { CString, ptr } from 'bun:ffi'
 import { symbols } from './ffi'
 import { encode } from './utils'
 
 type Pointer = number
+type BlipglossColor = ReturnType<typeof Color>
 
-class Style {
+export class Style {
   #handle: number
 
   constructor(handle: number) {
@@ -51,11 +52,11 @@ class Style {
     return this.SetIntValue('Width', val)
   }
 
-  Foreground(color: Pointer) {
+  Foreground(color: BlipglossColor) {
     return this.SetColorValue('Foreground', color)
   }
 
-  Background(color: Pointer) {
+  Background(color: BlipglossColor) {
     return this.SetColorValue('Background', color)
   }
 
@@ -79,35 +80,35 @@ class Style {
     return this.SetBooleanValue('Blink', val)
   }
 
-  BorderTopBackground(color: Pointer) {
+  BorderTopBackground(color: BlipglossColor) {
     return this.SetColorValue('BorderTopBackground', color)
   }
 
-  BorderBottomBackground(color: Pointer) {
+  BorderBottomBackground(color: BlipglossColor) {
     return this.SetColorValue('BorderBottomBackground', color)
   }
 
-  BorderLeftBackground(color: Pointer) {
+  BorderLeftBackground(color: BlipglossColor) {
     return this.SetColorValue('BorderLeftBackground', color)
   }
 
-  BorderRightBackground(color: Pointer) {
+  BorderRightBackground(color: BlipglossColor) {
     return this.SetColorValue('BorderRightBackground', color)
   }
 
-  BorderTopForeground(color: Pointer) {
+  BorderTopForeground(color: BlipglossColor) {
     return this.SetColorValue('BorderTopForeground', color)
   }
 
-  BorderBottomForeground(color: Pointer) {
+  BorderBottomForeground(color: BlipglossColor) {
     return this.SetColorValue('BorderBottomForeground', color)
   }
 
-  BorderLeftForeground(color: Pointer) {
+  BorderLeftForeground(color: BlipglossColor) {
     return this.SetColorValue('BorderLeftForeground', color)
   }
 
-  BorderRightForeground(color: Pointer) {
+  BorderRightForeground(color: BlipglossColor) {
     return this.SetColorValue('BorderRightForeground', color)
   }
 
@@ -127,7 +128,7 @@ class Style {
     return this.SetBooleanValue('BorderRight', val)
   }
 
-  BorderBackground(color: Pointer) {
+  BorderBackground(color: BlipglossColor) {
     return this.SetColorValue('BorderBackground', color)
   }
 
@@ -144,9 +145,10 @@ class Style {
   }
 
   Render(text: string) {
-    symbols.Render(this.#handle, ptr(encode(text)))
-    symbols.FreeString(this.#handle)
-    return this
+    const textPtr = symbols.Render(this.#handle, ptr(encode(text)))
+    const textStr = new CString(textPtr)
+    symbols.FreeString(textStr.ptr)
+    return textStr
   }
 
   Copy() {
@@ -155,16 +157,22 @@ class Style {
     return this
   }
 
-  FreeString() {
+  FreeHandle() {
     symbols.FreeString(this.#handle)
   }
 }
 
-function Color(color: string) {
+export function NewStyle() {
+  return Style.NewStyle()
+}
+
+export function Color(color: string): Pointer {
   return symbols.Color(ptr(encode(color)))
 }
 
-export const blipgloss = {
-  NewStyle: Style.NewStyle,
-  Color
+/**
+ * Returns whether or not the terminal has a dark background.
+ */
+export function HasDarkBackground(): boolean {
+  return symbols.HasDarkBackground()
 }

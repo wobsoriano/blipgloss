@@ -1,4 +1,4 @@
-import { blipgloss } from './src'
+import * as blipgloss from './src'
 
 // const style = new Style()
 
@@ -10,8 +10,7 @@ const style = blipgloss.NewStyle()
 .PaddingBottom(2)
 .PaddingLeft(4)
 .Width(20)
-.Render("Hello, bun.")
 
-// console.log(style.GetBold())
+console.log(style.Render("Hello, bun."))
 
 // style.FreeString()

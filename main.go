@@ -7,7 +7,6 @@ package main
 import "C"
 
 import (
-	"fmt"
 	"reflect"
 	"runtime/cgo"
 	"unsafe"
@@ -42,9 +41,9 @@ func NewStyle() *C.char {
 }
 
 //export Render
-func Render(zxc *C.char, text *C.char) {
+func Render(zxc *C.char, text *C.char) *C.char {
 	key := str(zxc)
-	fmt.Println(m[key].Render(str(text)))
+	return ch(m[key].Render(str(text)))
 }
 
 //export Copy
@@ -108,4 +107,9 @@ func GetBoolValue(fieldPtr, keyPtr *C.char) bool {
 //export Color
 func Color(ptr *C.char) C.uintptr_t {
 	return C.uintptr_t(cgo.NewHandle(lipgloss.Color(str(ptr))))
+}
+
+//export HasDarkBackground
+func HasDarkBackground() bool {
+	return lipgloss.HasDarkBackground()
 }

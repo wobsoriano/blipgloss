@@ -8,7 +8,7 @@ export const { symbols } = dlopen(location, {
   },
   Render: {
     args: [FFIType.ptr, FFIType.ptr],
-    returns: FFIType.void
+    returns: FFIType.ptr
   },
   Copy: {
     args: [],
@@ -41,6 +41,10 @@ export const { symbols } = dlopen(location, {
   Color: {
     args: [FFIType.ptr],
     returns: FFIType.ptr
+  },
+  HasDarkBackground: {
+    args: [],
+    returns: FFIType.bool
   },
   FreeString: {
     args: [FFIType.ptr],
