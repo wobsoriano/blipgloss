@@ -1,11 +1,11 @@
-import { Style } from './src'
+import { lipgloss } from './src'
 
 // const style = new Style()
 
-const style = Style.NewStyle()
+const style = lipgloss.NewStyle()
 .Bold(true)
-.Foreground("#FAFAFA")
-.Background("#7D56F4")
+.Foreground(lipgloss.Color("#FAFAFA"))
+.Background(lipgloss.Color("#7D56F4"))
 .PaddingTop(2)
 .PaddingBottom(2)
 .PaddingLeft(4)

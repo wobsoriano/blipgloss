@@ -2,7 +2,9 @@ import { ptr } from 'bun:ffi'
 import { symbols } from './ffi'
 import { encode } from './utils'
 
-export class Style {
+type Pointer = number
+
+class Style {
   #handle: number
 
   constructor(handle: number) {
@@ -13,8 +15,8 @@ export class Style {
     return new Style(symbols.NewStyle())
   }
 
-  private SetColorValue(key: string, value: string) {
-    symbols.SetColorValue(this.#handle, ptr(encode(key)), ptr(encode(value)))
+  private SetColorValue(key: string, value: Pointer) {
+    symbols.SetColorValue(this.#handle, ptr(encode(key)), value)
     return this
   }
 
@@ -49,11 +51,11 @@ export class Style {
     return this.SetIntValue('Width', val)
   }
 
-  Foreground(color: string) {
+  Foreground(color: Pointer) {
     return this.SetColorValue('Foreground', color)
   }
 
-  Background(color: string) {
+  Background(color: Pointer) {
     return this.SetColorValue('Background', color)
   }
 
@@ -77,35 +79,35 @@ export class Style {
     return this.SetBooleanValue('Blink', val)
   }
 
-  BorderTopBackground(color: string) {
+  BorderTopBackground(color: Pointer) {
     return this.SetColorValue('BorderTopBackground', color)
   }
 
-  BorderBottomBackground(color: string) {
+  BorderBottomBackground(color: Pointer) {
     return this.SetColorValue('BorderBottomBackground', color)
   }
 
-  BorderLeftBackground(color: string) {
+  BorderLeftBackground(color: Pointer) {
     return this.SetColorValue('BorderLeftBackground', color)
   }
 
-  BorderRightBackground(color: string) {
+  BorderRightBackground(color: Pointer) {
     return this.SetColorValue('BorderRightBackground', color)
   }
 
-  BorderTopForeground(color: string) {
+  BorderTopForeground(color: Pointer) {
     return this.SetColorValue('BorderTopForeground', color)
   }
 
-  BorderBottomForeground(color: string) {
+  BorderBottomForeground(color: Pointer) {
     return this.SetColorValue('BorderBottomForeground', color)
   }
 
-  BorderLeftForeground(color: string) {
+  BorderLeftForeground(color: Pointer) {
     return this.SetColorValue('BorderLeftForeground', color)
   }
 
-  BorderRightForeground(color: string) {
+  BorderRightForeground(color: Pointer) {
     return this.SetColorValue('BorderRightForeground', color)
   }
 
@@ -125,7 +127,7 @@ export class Style {
     return this.SetBooleanValue('BorderRight', val)
   }
 
-  BorderBackground(color: string) {
+  BorderBackground(color: Pointer) {
     return this.SetColorValue('BorderBackground', color)
   }
 
@@ -156,4 +158,13 @@ export class Style {
   FreeString() {
     symbols.FreeString(this.#handle)
   }
+}
+
+function Color(color: string) {
+  return symbols.Color(ptr(encode(color)))
+}
+
+export const lipgloss = {
+  NewStyle: Style.NewStyle,
+  Color
 }
