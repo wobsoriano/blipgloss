@@ -1,0 +1,43 @@
+{
+  "name": "blipgloss",
+  "version": "0.1.1",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "description": "",
+  "scripts": {
+    "build": "tsup",
+    "build:go": "./build.sh",
+    "release": "bumpp --commit --push --tag && npm publish",
+    "prepublishOnly": "bun run build",
+    "test": "bun wiptest"
+  },
+  "files": [
+    "dist",
+    "release"
+  ],
+  "keywords": [
+    "bun"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/wobsoriano/blipgloss#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wobsoriano/blipgloss.git"
+  },
+  "bugs": "https://github.com/wobsoriano/blipgloss/issues",
+  "author": "Robert Soriano <sorianorobertc@gmail.com>",
+  "devDependencies": {
+    "bun-types": "^0.1.4",
+    "bumpp": "^8.2.1",
+    "typescript": "^4.7.4",
+    "tsup": "^6.1.3"
+  }
+}
