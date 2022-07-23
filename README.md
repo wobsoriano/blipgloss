@@ -26,6 +26,40 @@ const style = NewStyle().
 console.log(style.Render("Hello, bun."))
 ```
 
+## Colors
+
+Blipgloss supports the following color profiles:
+
+### ANSI 16 colors (4-bit)
+
+```js
+import { Color } from 'blipgloss'
+
+Color("5")  // magenta
+Color("9")  // red
+Color("12") // light blue
+```
+
+### ANSI 256 colors (8-bit)
+
+```js
+import { Color } from 'blipgloss'
+
+Color("86")  // aqua
+Color("201") // hot pink
+Color("202") // orange
+```
+
+### True Color (16,777,216 colors; 24-bit)
+
+```js
+import { Color } from 'blipgloss'
+
+Color("#0000FF") // good ol' 100% blue
+Color("#04B575") // a green
+Color("#3C3C3C") // a dark gray
+```
+
 ## License
 
 MIT
