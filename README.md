@@ -1,6 +1,6 @@
 # blipgloss
 
-WIP
+Style definitions for nice terminal layouts. Powered by [lipgloss](https://github.com/charmbracelet/lipgloss) and `bun:ffi`.
 
 ## Install
 
@@ -10,13 +10,15 @@ bun add blipgloss
 
 ## Usage
 
-```ts
-import { blipgloss } from 'blipgloss'
+Blipgloss takes an expressive, declarative approach to terminal rendering. Users familiar with CSS will feel at home with Blipgloss.
 
-const style = blipgloss.NewStyle().
+```ts
+import { NewStyle, Color } from 'blipgloss'
+
+const style = NewStyle().
   Bold(true).
-  Foreground(blipgloss.Color("#FAFAFA")).
-  Background(blipgloss.Color("#7D56F4")).
+  Foreground(Color("#FAFAFA")).
+  Background(Color("#7D56F4")).
   PaddingTop(2).
   PaddingLeft(4).
   Width(22)
