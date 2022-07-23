@@ -1,1 +1,1 @@
-export * from './ffi'
+export * from './lib'
