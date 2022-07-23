@@ -144,6 +144,10 @@ export class Style {
     return symbols.GetBoolValue(this.#handle, ptr(encode('GetBold')))
   }
 
+  Reverse(val: boolean) {
+    return this.SetBooleanValue('Reverse', val)
+  }
+
   Render(text: string) {
     const textPtr = symbols.Render(this.#handle, ptr(encode(text)))
     const textStr = new CString(textPtr)
