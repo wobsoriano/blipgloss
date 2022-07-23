@@ -164,7 +164,7 @@ function Color(color: string) {
   return symbols.Color(ptr(encode(color)))
 }
 
-export const lipgloss = {
+export const blipgloss = {
   NewStyle: Style.NewStyle,
   Color
 }

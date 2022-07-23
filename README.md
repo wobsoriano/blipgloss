@@ -11,12 +11,12 @@ bun add blipgloss
 ## Usage
 
 ```ts
-import { Style } from 'blipgloss'
+import { blipgloss } from 'blipgloss'
 
-const style = lipgloss.NewStyle().
+const style = blipgloss.NewStyle().
   Bold(true).
-  Foreground("#FAFAFA").
-  Background("#7D56F4").
+  Foreground(blipgloss.Color("#FAFAFA")).
+  Background(blipgloss.Color("#7D56F4")).
   PaddingTop(2).
   PaddingLeft(4).
   Width(22)
