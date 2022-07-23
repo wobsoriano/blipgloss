@@ -113,6 +113,22 @@ const str = lipgloss.NewStyle()
   .Render("What’s for lunch?")
 ```
 
+## Borders
+
+`TODO`
+
+## Copying Styles
+
+`TODO`
+
+## Rendering
+
+Generally, you just call the `Render(string)` method:
+
+```js
+console.log(NewStyle().Bold(true).Render("Hello, bun."))
+```
+
 ## License
 
 MIT
