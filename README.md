@@ -13,7 +13,7 @@ bun add blipgloss
 Blipgloss takes an expressive, declarative approach to terminal rendering. Users familiar with CSS will feel at home with Blipgloss.
 
 ```ts
-import { NewStyle, Color } from 'blipgloss'
+import { NewStyle } from 'blipgloss'
 
 const style = NewStyle()
   .Bold(true)
