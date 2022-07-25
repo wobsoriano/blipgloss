@@ -26,7 +26,7 @@ const style = NewStyle()
 console.log(style.Render("Hello, bun."))
 ```
 
-<img src="https://i.imgur.com/TKhvhlR.png" alt="demo" />
+<img src="https://i.imgur.com/TKhvhlR.png" alt="demo" width="300" />
 
 ## Colors
 
