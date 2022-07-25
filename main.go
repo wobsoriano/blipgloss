@@ -8,7 +8,6 @@ import "C"
 
 import (
 	"reflect"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/charmbracelet/lipgloss"
@@ -56,14 +55,12 @@ func Copy(zxc *C.char, text *C.char) *C.char {
 }
 
 //export SetColorValue
-func SetColorValue(fieldPtr, keyPtr *C.char, valuePtr C.uintptr_t) {
+func SetColorValue(fieldPtr, keyPtr, valuePtr *C.char) {
 	style := m[str(fieldPtr)]
 	key := str(keyPtr)
-	// value := lipgloss.Color(str(valuePtr))
-	value := cgo.Handle(valuePtr).Value().(lipgloss.Color)
+	value := lipgloss.Color(str(valuePtr))
 	color := reflect.ValueOf(value)
 	reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{color})
-	cgo.Handle(valuePtr).Delete()
 }
 
 //export SetIntValue
@@ -103,11 +100,6 @@ func GetBoolValue(fieldPtr, keyPtr *C.char) bool {
 	style := m[str(fieldPtr)]
 	key := str(keyPtr)
 	return reflect.ValueOf(style).MethodByName(key).Interface().(bool)
-}
-
-//export Color
-func Color(ptr *C.char) C.uintptr_t {
-	return C.uintptr_t(cgo.NewHandle(lipgloss.Color(str(ptr))))
 }
 
 //export HasDarkBackground

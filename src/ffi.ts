@@ -1,6 +1,17 @@
-import { dlopen, FFIType } from 'bun:ffi'
+import { dlopen, FFIType, suffix } from 'bun:ffi'
 
-const location = new URL(`../release/${process.platform}-${process.arch}`, import.meta.url).pathname
+const { platform, arch } = process
+
+let filename: string
+
+if (arch === 'x64') {
+  filename = `../release/blipgloss-${platform}-amd64.${suffix}`
+} else {
+  filename = `../release/blipgloss-${platform}-${arch}.${suffix}`
+}
+
+const location = new URL(filename, import.meta.url).pathname
+
 export const { symbols } = dlopen(location, {
   NewStyle: {
     args: [],
@@ -37,10 +48,6 @@ export const { symbols } = dlopen(location, {
   GetIntValue: {
     args: [FFIType.ptr, FFIType.ptr],
     returns: FFIType.int
-  },
-  Color: {
-    args: [FFIType.ptr],
-    returns: FFIType.ptr
   },
   HasDarkBackground: {
     args: [],

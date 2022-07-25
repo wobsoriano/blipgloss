@@ -2,8 +2,8 @@ import { CString, ptr } from 'bun:ffi'
 import { symbols } from './ffi'
 import { encode } from './utils'
 
-type Pointer = number
-type BlipglossColor = ReturnType<typeof Color>
+// type Pointer = number
+type BlipglossColor = string
 
 export class Style {
   #handle: number
@@ -16,8 +16,8 @@ export class Style {
     return new Style(symbols.NewStyle())
   }
 
-  private SetColorValue(key: string, value: Pointer) {
-    symbols.SetColorValue(this.#handle, ptr(encode(key)), value)
+  private SetColorValue(key: string, value: BlipglossColor) {
+    symbols.SetColorValue(this.#handle, ptr(encode(key)), ptr(encode(value)))
     return this
   }
 
@@ -168,10 +168,6 @@ export class Style {
 
 export function NewStyle() {
   return Style.NewStyle()
-}
-
-export function Color(color: string): Pointer {
-  return symbols.Color(ptr(encode(color)))
 }
 
 /**

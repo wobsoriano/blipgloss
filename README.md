@@ -17,8 +17,8 @@ import { NewStyle, Color } from 'blipgloss'
 
 const style = NewStyle()
   .Bold(true)
-  .Foreground(Color("#FAFAFA"))
-  .Background(Color("#7D56F4"))
+  .Foreground("#FAFAFA")
+  .Background("#7D56F4")
   .PaddingTop(2)
   .PaddingLeft(4)
   .Width(22)
@@ -33,25 +33,25 @@ Blipgloss supports the following color profiles:
 ### ANSI 16 colors (4-bit)
 
 ```js
-Color("5")  // magenta
-Color("9")  // red
-Color("12") // light blue
+Background("5")  // magenta
+Background("9")  // red
+Background("12") // light blue
 ```
 
 ### ANSI 256 colors (8-bit)
 
 ```js
-Color("86")  // aqua
-Color("201") // hot pink
-Color("202") // orange
+Background("86")  // aqua
+Background("201") // hot pink
+Background("202") // orange
 ```
 
 ### True Color (16,777,216 colors; 24-bit)
 
 ```js
-Color("#0000FF") // good ol' 100% blue
-Color("#04B575") // a green
-Color("#3C3C3C") // a dark gray
+Background("#0000FF") // good ol' 100% blue
+Background("#04B575") // a green
+Background("#3C3C3C") // a dark gray
 ```
 
 ...as well as a 1-bit Ascii profile, which is black and white only.
@@ -109,7 +109,7 @@ Setting a minimum width and height is simple and straightforward.
 const str = lipgloss.NewStyle()
   .Width(24)
   .Height(32)
-  .Foreground(Color("63"))
+  .Foreground("63")
   .Render("What’s for lunch?")
 ```
 
