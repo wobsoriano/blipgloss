@@ -26,6 +26,8 @@ const style = NewStyle()
 console.log(style.Render("Hello, bun."))
 ```
 
+<img src="https://i.imgur.com/TKhvhlR.png" alt="demo" />
+
 ## Colors
 
 Blipgloss supports the following color profiles:
