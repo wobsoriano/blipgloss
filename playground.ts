@@ -11,6 +11,6 @@ const style = blipgloss.NewStyle()
 .PaddingLeft(4)
 .Width(20)
 
-console.log(style.Render("Hello, bunz."))
+console.log(style.Render("Hello, bun."))
 
 // style.FreeString()

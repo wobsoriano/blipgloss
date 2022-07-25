@@ -1,4 +1,4 @@
-module github.com/wobsoriano/lipgloss
+module github.com/wobsoriano/blipgloss
 
 go 1.18
 
