@@ -172,7 +172,7 @@ export class Style {
     return this
   }
 
-  UnsetAlign(key: string) {
+  UnsetAlign() {
     return this.UnsetRule('UnsetAlign')
   }
 
