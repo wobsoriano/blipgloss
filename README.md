@@ -10,7 +10,7 @@ bun add blipgloss
 
 ## Usage
 
-Blipgloss takes an expressive, declarative approach to terminal rendering. Users familiar with CSS will feel at home with BlipGloss.
+Blipgloss takes an expressive, declarative approach to terminal rendering. Users familiar with CSS will feel at home with Blipgloss.
 
 ```ts
 import { NewStyle } from 'blipgloss'
