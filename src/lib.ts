@@ -156,9 +156,7 @@ export class Style {
   }
 
   Copy() {
-    // Probably create a new instance and copy
-    this.#handle = symbols.Copy()
-    return this
+    return new Style(symbols.Copy(this.#handle))
   }
 
   FreeHandle() {

@@ -13,4 +13,14 @@ const style = blipgloss.NewStyle()
 
 console.log(style.Render("Hello, bun."))
 
+const style2 = style.Copy()
+.Width(30)
+
+console.log(style2.Render("Hello, bun 2."))
+
+const style3 = style2.Copy()
+.Width(40)
+
+console.log(style3.Render("Hello, bun 3."))
+
 // style.FreeString()
