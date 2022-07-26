@@ -22,7 +22,7 @@ export const { symbols } = dlopen(location, {
     returns: FFIType.ptr
   },
   Copy: {
-    args: [],
+    args: [FFIType.ptr],
     returns: FFIType.ptr
   },
   SetColorValue: {
@@ -52,6 +52,10 @@ export const { symbols } = dlopen(location, {
   HasDarkBackground: {
     args: [],
     returns: FFIType.bool
+  },
+  UnsetRule: {
+    args: [FFIType.ptr, FFIType.ptr],
+    returns: FFIType.void
   },
   FreeString: {
     args: [FFIType.ptr],

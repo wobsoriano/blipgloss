@@ -40,14 +40,14 @@ func NewStyle() *C.char {
 }
 
 //export Render
-func Render(zxc *C.char, text *C.char) *C.char {
-	key := str(zxc)
+func Render(keyPtr *C.char, text *C.char) *C.char {
+	key := str(keyPtr)
 	return ch(m[key].Render(str(text)))
 }
 
 //export Copy
-func Copy(zxc *C.char, text *C.char) *C.char {
-	key := str(zxc)
+func Copy(keyPtr *C.char) *C.char {
+	key := str(keyPtr)
 	canonic, _ := nanoid.Standard(10)
 	uniqueId := canonic()
 	m[uniqueId] = m[key].Copy()
@@ -86,6 +86,13 @@ func SetBooleanValue(fieldPtr, keyPtr *C.char, value bool) {
 	key := str(keyPtr)
 	boolValue := reflect.ValueOf(value)
 	reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{boolValue})
+}
+
+//export UnsetRule
+func UnsetRule(fieldPtr, keyPtr *C.char) {
+	style := m[str(fieldPtr)]
+	key := str(keyPtr)
+	reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{})
 }
 
 //export GetIntValue

@@ -164,6 +164,49 @@ export class Style {
   FreeHandle() {
     symbols.FreeString(this.#handle)
   }
+
+  // Unset rules
+
+  private UnsetRule(key: string) {
+    symbols.UnsetRule(this.#handle, ptr(encode(key)))
+    return this
+  }
+
+  UnsetAlign(key: string) {
+    return this.UnsetRule('UnsetAlign')
+  }
+
+  UnsetBackground() {
+    return this.UnsetRule('UnsetBackground')
+  }
+
+  UnsetBlink() {
+    return this.UnsetRule('UnsetBlink')
+  }
+
+  UnsetBold() {
+    return this.UnsetRule('UnsetBold')
+  }
+
+  UnsetBorderBackground() {
+    return this.UnsetRule('UnsetBorderBackground')
+  }
+
+  UnsetBorderBottom() {
+    return this.UnsetRule('UnsetBorderBottom')
+  }
+
+  UnsetBorderBottomBackground() {
+    return this.UnsetRule('UnsetBorderBottomBackground')
+  }
+
+  UnsetBorderBottomForeground() {
+    return this.UnsetRule('UnsetBorderBottomForeground')
+  }
+
+  UnsetBorderForeground() {
+    return this.UnsetRule('UnsetBorderForeground')
+  }
 }
 
 export function NewStyle() {
