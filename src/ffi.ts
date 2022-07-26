@@ -26,7 +26,7 @@ export const { symbols } = dlopen(location, {
     returns: FFIType.ptr
   },
   SetColorValue: {
-    args: [FFIType.ptr, FFIType.ptr, FFIType.ptr],
+    args: [FFIType.ptr, FFIType.ptr, FFIType.ptr, FFIType.bool],
     returns: FFIType.void
   },
   SetIntValue: {

@@ -7,6 +7,7 @@ package main
 import "C"
 
 import (
+	"encoding/json"
 	"reflect"
 	"unsafe"
 
@@ -55,12 +56,20 @@ func Copy(keyPtr *C.char) *C.char {
 }
 
 //export SetColorValue
-func SetColorValue(fieldPtr, keyPtr, valuePtr *C.char) {
+func SetColorValue(fieldPtr, keyPtr, valuePtr *C.char, adaptive bool) {
 	style := m[str(fieldPtr)]
 	key := str(keyPtr)
-	value := lipgloss.Color(str(valuePtr))
-	color := reflect.ValueOf(value)
-	reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{color})
+
+	if adaptive {
+		adaptiveColor := lipgloss.AdaptiveColor{}
+		json.Unmarshal([]byte(str(valuePtr)), &adaptiveColor)
+		color := reflect.ValueOf(adaptiveColor)
+		reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{color})
+	} else {
+		value := lipgloss.Color(str(valuePtr))
+		color := reflect.ValueOf(value)
+		reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{color})
+	}
 }
 
 //export SetIntValue

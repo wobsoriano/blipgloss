@@ -3,7 +3,10 @@ import { symbols } from './ffi'
 import { encode } from './utils'
 
 // type Pointer = number
-type BlipglossColor = string
+type BlipglossColor = string | {
+  Light: string
+  Dark: string
+}
 
 export class Style {
   #handle: number
@@ -17,7 +20,9 @@ export class Style {
   }
 
   private SetColorValue(key: string, value: BlipglossColor) {
-    symbols.SetColorValue(this.#handle, ptr(encode(key)), ptr(encode(value)))
+    const adaptive = typeof value !== 'string'
+    const color = adaptive ? ptr(encode(JSON.stringify(value))) : ptr(encode(value))
+    symbols.SetColorValue(this.#handle, ptr(encode(key)), color, adaptive)
     return this
   }
 
