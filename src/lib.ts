@@ -81,6 +81,26 @@ export class Style {
     return this.SetIntValue('PaddingRight', padding)
   }
 
+  MarginTop(padding: number) {
+    return this.SetIntValue('MarginTop', padding)
+  }
+
+  MarginBottom(padding: number) {
+    return this.SetIntValue('MarginBottom', padding)
+  }
+
+  MarginLeft(padding: number) {
+    return this.SetIntValue('MarginLeft', padding)
+  }
+
+  MarginRight(padding: number) {
+    return this.SetIntValue('MarginRight', padding)
+  }
+
+  MarginBackground(color: BlipglossColor) {
+    return this.SetColorValue('MarginBackground', color)
+  }
+
   Blink(val: boolean) {
     return this.SetBooleanValue('Blink', val)
   }
