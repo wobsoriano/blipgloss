@@ -10,7 +10,7 @@ bun add blipgloss
 
 ## Usage
 
-Blipgloss takes an expressive, declarative approach to terminal rendering. Users familiar with CSS will feel at home with Blipgloss.
+Blipgloss takes an expressive, declarative approach to terminal rendering. Users familiar with CSS will feel at home with B
 
 ```ts
 import { NewStyle } from 'blipgloss'
@@ -108,7 +108,7 @@ There is also shorthand syntax for margins and padding, which follows the same f
 Setting a minimum width and height is simple and straightforward.
 
 ```js
-const str = lipgloss.NewStyle()
+const str = NewStyle()
   .Width(24)
   .Height(32)
   .Foreground("63")
@@ -124,7 +124,7 @@ const str = lipgloss.NewStyle()
 Just use `Copy()`:
 
 ```js
-const style = lipgloss.NewStyle().Foreground("219")
+const style = NewStyle().Foreground("219")
 
 const wildStyle = style.Copy().Blink(true)
 ```
@@ -136,7 +136,7 @@ const wildStyle = style.Copy().Blink(true)
 All rules can be unset:
 
 ```js
-const style = lipgloss.NewStyle().
+const style = NewStyle().
     Bold(true).                        // make it bold
     UnsetBold().                       // jk don't make it bold
     Background("227"). // yellow background
