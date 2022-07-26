@@ -60,6 +60,19 @@ Background("#3C3C3C") // a dark gray
 
 The terminal's color profile will be automatically detected, and colors outside the gamut of the current palette will be automatically coerced to their closest available value.
 
+### Adaptive Colors
+
+You can also specify color options for light and dark backgrounds:
+
+```js
+Background({
+  Light: '236',
+  Dark: '248'
+})
+```
+
+The terminal's background color will automatically be detected and the appropriate color will be chosen at runtime.
+
 ## Inline Formatting
 
 Blipgloss supports the usual ANSI text formatting options:
