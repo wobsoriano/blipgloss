@@ -131,6 +131,18 @@ const wildStyle = style.Copy().Blink(true)
 
 `Copy()` performs a copy on the underlying data structure ensuring that you get a true, dereferenced copy of a style. Without copying it's possible to mutate styles.
 
+## Unsetting Rules
+
+All rules can be unset:
+
+```js
+const style = lipgloss.NewStyle().
+    Bold(true).                        // make it bold
+    UnsetBold().                       // jk don't make it bold
+    Background("227"). // yellow background
+    UnsetBackground()                  // never mind
+```
+
 ## Rendering
 
 Generally, you just call the `Render(string)` method:
