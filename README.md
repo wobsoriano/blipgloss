@@ -186,7 +186,7 @@ JoinVertical(Position.Center, paragraphA, paragraphB)
 JoinHorizontal(0.2, paragraphA, paragraphB, paragraphC)
 ```
 
-## Measuring Width and Height
+### Measuring Width and Height
 
 Sometimes you’ll want to know the width and height of text blocks when building your layouts.
 
