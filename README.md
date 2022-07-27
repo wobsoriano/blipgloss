@@ -206,10 +206,9 @@ JoinHorizontal(0.2, paragraphA, paragraphB, paragraphC)
 Sometimes you’ll want to know the width and height of text blocks when building your layouts.
 
 ```js
-import { Width, Height } from 'blipgloss'
+import { NewStyle, Width, Height } from 'blipgloss'
 
-const block = lipgloss
-  .NewStyle()
+const block = NewStyle()
   .Width(40)
   .Padding(2)
   .Render(someLongString)
