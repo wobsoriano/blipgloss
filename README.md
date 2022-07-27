@@ -164,6 +164,28 @@ Generally, you just call the `Render(string)` method:
 console.log(NewStyle().Bold(true).Render("Hello, bun."))
 ```
 
+## Utilities
+
+In addition to pure styling, Lip Gloss also ships with some utilities to help assemble your layouts.
+
+### Joining Paragraphs
+
+Horizontally and vertically joining paragraphs is a cinch.
+
+```js
+import { Position, JoinHorizontal, JoinVertical } from 'blipgloss'
+
+// Horizontally join three paragraphs along their bottom edges
+JoinHorizontal(Position.Bottom, paragraphA, paragraphB, paragraphC)
+
+// Vertically join two paragraphs along their center axes
+JoinVertical(Position.Center, paragraphA, paragraphB)
+
+// Horizontally join three paragraphs, with the shorter ones aligning 20%
+// from the top of the tallest
+JoinHorizontal(0.2, paragraphA, paragraphB, paragraphC)
+```
+
 ## License
 
 MIT
