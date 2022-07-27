@@ -125,14 +125,14 @@ func HasDarkBackground() bool {
 }
 
 //export JoinHorizontal
-func JoinHorizontal(position int, paragraphs *C.char) *C.char {
+func JoinHorizontal(position float64, paragraphs *C.char) *C.char {
 	arr := strings.Split(str(paragraphs), ",")
 	joined := lipgloss.JoinHorizontal(lipgloss.Position(position), arr...)
 	return ch(joined)
 }
 
 //export JoinVertical
-func JoinVertical(position int, paragraphs *C.char) *C.char {
+func JoinVertical(position float64, paragraphs *C.char) *C.char {
 	arr := strings.Split(str(paragraphs), ",")
 	joined := lipgloss.JoinVertical(lipgloss.Position(position), arr...)
 	return ch(joined)

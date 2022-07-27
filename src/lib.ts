@@ -185,7 +185,7 @@ export class Style {
     const textPtr = symbols.Render(this.#handle, ptr(encode(text)))
     const textStr = new CString(textPtr)
     symbols.FreeString(textStr.ptr)
-    return textStr
+    return textStr.toString()
   }
 
   Copy() {
@@ -238,22 +238,6 @@ export class Style {
   UnsetBorderForeground() {
     return this.UnsetRule('UnsetBorderForeground')
   }
-
-  // Utilities
-
-  JoinHorizontal(position: Position | number, ...paragraphs: string[]) {
-    const textPtr = symbols.JoinHorizontal(position, ptr(encode(JSON.stringify(paragraphs))))
-    const textStr = new CString(textPtr)
-    symbols.FreeString(textStr.ptr)
-    return textStr
-  }
-
-  JoinVertical(position: Position | number, ...paragraphs: string[]) {
-    const textPtr = symbols.JoinVertical(position, ptr(encode(JSON.stringify(paragraphs))))
-    const textStr = new CString(textPtr)
-    symbols.FreeString(textStr.ptr)
-    return textStr
-  }
 }
 
 export function NewStyle() {
@@ -265,4 +249,20 @@ export function NewStyle() {
  */
 export function HasDarkBackground(): boolean {
   return symbols.HasDarkBackground()
+}
+
+// Utilities
+
+export function JoinHorizontal(position: Position | number, ...paragraphs: string[]) {
+  const textPtr = symbols.JoinHorizontal(position, ptr(encode(JSON.stringify(paragraphs))))
+  const textStr = new CString(textPtr)
+  symbols.FreeString(textStr.ptr)
+  return textStr.toString()
+}
+
+export function JoinVertical(position: Position | number, ...paragraphs: string[]) {
+  const textPtr = symbols.JoinVertical(position, ptr(encode(JSON.stringify(paragraphs))))
+  const textStr = new CString(textPtr)
+  symbols.FreeString(textStr.ptr)
+  return textStr.toString()
 }

@@ -22,4 +22,12 @@ const style2 = style.Copy()
 
 console.log(style2.Render("Hello, bun clone."))
 
+const test = blipgloss.JoinHorizontal(
+  blipgloss.Position.Top,
+  style.Render("Hello, bun."),
+  style2.Render("Hello, bun clone.")
+)
+
+console.log(test)
+
 // style.FreeString()
