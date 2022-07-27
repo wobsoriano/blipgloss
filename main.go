@@ -9,6 +9,7 @@ import "C"
 import (
 	"encoding/json"
 	"reflect"
+	"strings"
 	"unsafe"
 
 	"github.com/charmbracelet/lipgloss"
@@ -121,4 +122,18 @@ func GetBoolValue(fieldPtr, keyPtr *C.char) bool {
 //export HasDarkBackground
 func HasDarkBackground() bool {
 	return lipgloss.HasDarkBackground()
+}
+
+//export JoinHorizontal
+func JoinHorizontal(position int, paragraphs *C.char) *C.char {
+	arr := strings.Split(str(paragraphs), ",")
+	joined := lipgloss.JoinHorizontal(lipgloss.Position(position), arr...)
+	return ch(joined)
+}
+
+//export JoinVertical
+func JoinVertical(position int, paragraphs *C.char) *C.char {
+	arr := strings.Split(str(paragraphs), ",")
+	joined := lipgloss.JoinVertical(lipgloss.Position(position), arr...)
+	return ch(joined)
 }

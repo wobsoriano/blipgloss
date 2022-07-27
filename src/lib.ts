@@ -8,6 +8,14 @@ type BlipglossColor = string | {
   Dark: string
 }
 
+export enum Position {
+  Top = 0.0,
+	Bottom = 1.0,
+	Center = 0.5,
+	Left = 0.0,
+	Right = 1.0
+}
+
 export class Style {
   #handle: number
 
@@ -229,6 +237,22 @@ export class Style {
 
   UnsetBorderForeground() {
     return this.UnsetRule('UnsetBorderForeground')
+  }
+
+  // Utilities
+
+  JoinHorizontal(position: Position, ...paragraphs: string[]) {
+    const textPtr = symbols.JoinHorizontal(position, ptr(encode(JSON.stringify(paragraphs))))
+    const textStr = new CString(textPtr)
+    symbols.FreeString(textStr.ptr)
+    return textStr
+  }
+
+  JoinVertical(position: Position, ...paragraphs: string[]) {
+    const textPtr = symbols.JoinVertical(position, ptr(encode(JSON.stringify(paragraphs))))
+    const textStr = new CString(textPtr)
+    symbols.FreeString(textStr.ptr)
+    return textStr
   }
 }
 
