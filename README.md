@@ -186,6 +186,24 @@ JoinVertical(Position.Center, paragraphA, paragraphB)
 JoinHorizontal(0.2, paragraphA, paragraphB, paragraphC)
 ```
 
+## Measuring Width and Height
+
+Sometimes you’ll want to know the width and height of text blocks when building your layouts.
+
+```js
+import { Width, Height } from 'blipgloss'
+
+const block = lipgloss
+  .NewStyle()
+  .Width(40)
+  .Padding(2)
+  .Render(someLongString)
+
+// Get the actual, physical dimensions of the text block.
+const width = Width(block)
+const height = Height(block)
+```
+
 ## License
 
 MIT
