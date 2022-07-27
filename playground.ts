@@ -24,10 +24,13 @@ console.log(style2.Render("Hello, bun clone."))
 
 const test = blipgloss.JoinHorizontal(
   blipgloss.Position.Top,
-  style.Render("Hello, bun."),
-  style2.Render("Hello, bun clone.")
+  style.Render("Hello, bunz."),
+  style2.Render("Hello, bun clonez.")
 )
 
-console.log(test)
+const x = blipgloss.NewStyle().Foreground("#FAFAFA")
+.Background("#7D56F4")
+
+console.log(x.Render(test))
 
 // style.FreeString()

@@ -253,15 +253,19 @@ export function HasDarkBackground(): boolean {
 
 // Utilities
 
+function combineArgs(args: string[]) {
+  return args.join(",");
+}
+
 export function JoinHorizontal(position: Position | number, ...paragraphs: string[]) {
-  const textPtr = symbols.JoinHorizontal(position, ptr(encode(JSON.stringify(paragraphs))))
+  const textPtr = symbols.JoinHorizontal(position, ptr(encode(combineArgs(paragraphs))))
   const textStr = new CString(textPtr)
   symbols.FreeString(textStr.ptr)
   return textStr.toString()
 }
 
 export function JoinVertical(position: Position | number, ...paragraphs: string[]) {
-  const textPtr = symbols.JoinVertical(position, ptr(encode(JSON.stringify(paragraphs))))
+  const textPtr = symbols.JoinVertical(position, ptr(encode(combineArgs(paragraphs))))
   const textStr = new CString(textPtr)
   symbols.FreeString(textStr.ptr)
   return textStr.toString()
