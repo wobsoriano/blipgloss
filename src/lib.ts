@@ -238,6 +238,20 @@ export class Style {
   UnsetBorderForeground() {
     return this.UnsetRule('UnsetBorderForeground')
   }
+
+  // Enforcing Rules
+
+  Inline(val: boolean) {
+    return this.SetBooleanValue('Inline', val)
+  }
+
+  MaxWidth(val: number) {
+    return this.SetIntValue('MaxWidth', val)
+  }
+
+  MaxHeight(val: number) {
+    return this.SetIntValue('MaxHeight', val)
+  }
 }
 
 export function NewStyle() {

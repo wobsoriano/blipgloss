@@ -156,6 +156,21 @@ const style = NewStyle().
     UnsetBackground()                  // never mind
 ```
 
+## Enforcing Rules
+
+Sometimes, such as when developing a component, you want to make sure style definitions respect their intended purpose in the UI. This is where `Inline` and `MaxWidth`, and `MaxHeight` come in:
+
+```js
+// Force rendering onto a single line, ignoring margins, padding, and borders.
+someStyle.Inline(true).Render("yadda yadda")
+
+// Also limit rendering to five cells
+someStyle.Inline(true).MaxWidth(5).Render("yadda yadda")
+
+// Limit rendering to a 5x5 cell block
+someStyle.MaxWidth(5).MaxHeight(5).Render("yadda yadda")
+```
+
 ## Rendering
 
 Generally, you just call the `Render(string)` method:
