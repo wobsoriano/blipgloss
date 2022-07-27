@@ -65,6 +65,14 @@ export const { symbols } = dlopen(location, {
     args: [FFIType.float, FFIType.ptr],
     returns: FFIType.ptr
   },
+  Width: {
+    args: [FFIType.ptr],
+    returns: FFIType.int
+  },
+  Height: {
+    args: [FFIType.ptr],
+    returns: FFIType.int
+  },
   FreeString: {
     args: [FFIType.ptr],
     returns: FFIType.void

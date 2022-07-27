@@ -28,9 +28,6 @@ const test = blipgloss.JoinHorizontal(
   style2.Render("Hello, bun clonez.")
 )
 
-const x = blipgloss.NewStyle().Foreground("#FAFAFA")
-.Background("#7D56F4")
-
-console.log(x.Render(test))
+console.log(blipgloss.Width(style2.Render("Hello, bun clone.")))
 
 // style.FreeString()

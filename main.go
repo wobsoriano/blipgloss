@@ -137,3 +137,13 @@ func JoinVertical(position float64, paragraphs *C.char) *C.char {
 	joined := lipgloss.JoinVertical(lipgloss.Position(position), arr...)
 	return ch(joined)
 }
+
+//export Width
+func Width(text *C.char) int {
+	return lipgloss.Width(str(text))
+}
+
+//export Height
+func Height(text *C.char) int {
+	return lipgloss.Height(str(text))
+}

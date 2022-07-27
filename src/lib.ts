@@ -270,3 +270,11 @@ export function JoinVertical(position: Position | number, ...paragraphs: string[
   symbols.FreeString(textStr.ptr)
   return textStr.toString()
 }
+
+export function Width(text: string): number {
+  return symbols.Width(ptr(encode(text)))
+}
+
+export function Height(text: string): number {
+  return symbols.Height(ptr(encode(text)))
+}
