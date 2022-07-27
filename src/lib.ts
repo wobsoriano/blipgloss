@@ -241,14 +241,14 @@ export class Style {
 
   // Utilities
 
-  JoinHorizontal(position: Position, ...paragraphs: string[]) {
+  JoinHorizontal(position: Position | number, ...paragraphs: string[]) {
     const textPtr = symbols.JoinHorizontal(position, ptr(encode(JSON.stringify(paragraphs))))
     const textStr = new CString(textPtr)
     symbols.FreeString(textStr.ptr)
     return textStr
   }
 
-  JoinVertical(position: Position, ...paragraphs: string[]) {
+  JoinVertical(position: Position | number, ...paragraphs: string[]) {
     const textPtr = symbols.JoinVertical(position, ptr(encode(JSON.stringify(paragraphs))))
     const textStr = new CString(textPtr)
     symbols.FreeString(textStr.ptr)
