@@ -73,6 +73,11 @@ export class Style {
     return this.SetColorValue('Background', color)
   }
 
+  Padding(...values: number[]) {
+    symbols.Padding(this.#handle, ptr(encode(JSON.stringify(values))))
+    return this
+  }
+
   PaddingTop(padding: number) {
     return this.SetIntValue('PaddingTop', padding)
   }
@@ -87,6 +92,11 @@ export class Style {
 
   PaddingRight(padding: number) {
     return this.SetIntValue('PaddingRight', padding)
+  }
+
+  Margin(...values: number[]) {
+    symbols.Margin(this.#handle, ptr(encode(JSON.stringify(values))))
+    return this
   }
 
   MarginTop(padding: number) {

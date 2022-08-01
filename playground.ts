@@ -10,6 +10,7 @@ const style = blipgloss.NewStyle()
 // .PaddingBottom(2)
 // .PaddingLeft(4)
 .Width(30)
+.Padding(1, 4, 2)
 .Align(blipgloss.Position.Right)
 
 // console.log(style.Render("Hello, bun."))

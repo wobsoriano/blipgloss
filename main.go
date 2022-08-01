@@ -153,3 +153,29 @@ func Align(fieldPtr *C.char, position float64) {
 	style := m[str(fieldPtr)]
 	style.Align(lipgloss.Position(position))
 }
+
+//export Margin
+func Margin(fieldPtr *C.char, margins *C.char) {
+	style := m[str(fieldPtr)]
+	var arr []int
+	err := json.Unmarshal([]byte(str(margins)), &arr)
+
+	if err != nil {
+		panic("Unable to parse margins")
+	}
+
+	style.Margin(arr...)
+}
+
+//export Padding
+func Padding(fieldPtr *C.char, paddings *C.char) {
+	style := m[str(fieldPtr)]
+	var arr []int
+	err := json.Unmarshal([]byte(str(paddings)), &arr)
+
+	if err != nil {
+		panic("Unable to parse paddings")
+	}
+
+	style.Padding(arr...)
+}

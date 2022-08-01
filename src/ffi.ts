@@ -77,6 +77,14 @@ export const { symbols } = dlopen(location, {
     args: [FFIType.float],
     returns: FFIType.void
   },
+  Margin: {
+    args: [FFIType.ptr, FFIType.ptr],
+    returns: FFIType.void
+  },
+  Padding: {
+    args: [FFIType.ptr, FFIType.ptr],
+    returns: FFIType.void
+  },
   FreeString: {
     args: [FFIType.ptr],
     returns: FFIType.void
