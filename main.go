@@ -206,3 +206,16 @@ func BorderStyle(fieldPtr, borderStylePtr *C.char) {
 		style.BorderStyle(lipgloss.ThickBorder())
 	}
 }
+
+//export CustomBorder
+func CustomBorder(fieldPtr, valuePtr *C.char) {
+	style := getStyle(fieldPtr)
+	border := lipgloss.Border{}
+	err := json.Unmarshal([]byte(str(valuePtr)), &border)
+
+	if err != nil {
+		panic("Unable to parse custom border")
+	}
+
+	style.BorderStyle(border)
+}

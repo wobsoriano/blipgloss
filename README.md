@@ -169,7 +169,18 @@ const anotherStyle = NewStyle()
   .BorderTop(true).
   .BorderLeft(true)
 
-// TODO: Make own border
+// Make your own border
+const style = NewStyle()
+  .BorderStyle({
+    Top:         "._.:*:",
+    Bottom:      "._.:*:",
+    Left:        "|*",
+    Right:       "|*",
+    TopLeft:     "*",
+    TopRight:    "*",
+    BottomLeft:  "*",
+    BottomRight: "*",
+  })
 ```
 
 ## Copying Styles

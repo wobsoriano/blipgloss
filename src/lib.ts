@@ -16,7 +16,18 @@ export enum Position {
 	Right = 1.0
 }
 
-type BorderStyle = 'rounded' | 'double' | 'normal' | 'hidden' | 'thick'
+export type CustomBorder = {
+  Top?: string
+  Bottom?: string
+  Left?: string
+  Right?: string
+  TopLeft?: string
+  TopRight?: string
+  BottomLeft?: string
+  BottomRight?: string
+}
+
+export type BorderStyle = 'rounded' | 'double' | 'normal' | 'hidden' | 'thick' | CustomBorder
 
 export class Style {
   #handle: number
@@ -158,7 +169,11 @@ export class Style {
   }
 
   BorderStyle(style: BorderStyle) {
-    symbols.BorderStyle(this.#handle, ptr(encode(style)))
+    if (typeof style === 'string') {
+      symbols.BorderStyle(this.#handle, ptr(encode(style)))
+    } else {
+      symbols.CustomBorder(this.#handle, ptr(encode(JSON.stringify(style))))
+    }
     return this
   }
 
