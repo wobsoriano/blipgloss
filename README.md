@@ -114,7 +114,15 @@ There is also shorthand syntax for margins and padding, which follows the same f
 
 ## Aligning Text
 
-`TODO`
+You can align paragraphs of text to the left, right, or center.
+
+```js
+const style = NewStyle()
+  .Width(24)
+  .Align(lipgloss.Left)   // align it left
+  .Align(lipgloss.Right)  // no wait, align it right
+  .Align(lipgloss.Center) // just kidding, align it in the center
+```
 
 ## Width and Height
 
