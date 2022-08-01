@@ -33,6 +33,10 @@ func FreeString(str *C.char) {
 	C.free(unsafe.Pointer(str))
 }
 
+func getStyle(fieldPtr *C.char) lipgloss.Style {
+	return m[str(fieldPtr)]
+}
+
 //export NewStyle
 func NewStyle() *C.char {
 	canonic, _ := nanoid.Standard(10)
@@ -58,7 +62,7 @@ func Copy(keyPtr *C.char) *C.char {
 
 //export SetColorValue
 func SetColorValue(fieldPtr, keyPtr, valuePtr *C.char, adaptive bool) {
-	style := m[str(fieldPtr)]
+	style := getStyle(fieldPtr)
 	key := str(keyPtr)
 
 	if adaptive {
@@ -80,7 +84,7 @@ func SetColorValue(fieldPtr, keyPtr, valuePtr *C.char, adaptive bool) {
 
 //export SetIntValue
 func SetIntValue(fieldPtr, keyPtr *C.char, value int) {
-	style := m[str(fieldPtr)]
+	style := getStyle(fieldPtr)
 	key := str(keyPtr)
 	intValue := reflect.ValueOf(value)
 	reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{intValue})
@@ -88,7 +92,7 @@ func SetIntValue(fieldPtr, keyPtr *C.char, value int) {
 
 //export SetStringValue
 func SetStringValue(fieldPtr, keyPtr, valuePtr *C.char) {
-	style := m[str(fieldPtr)]
+	style := getStyle(fieldPtr)
 	key := str(keyPtr)
 	value := str(valuePtr)
 	color := reflect.ValueOf(value)
@@ -97,7 +101,7 @@ func SetStringValue(fieldPtr, keyPtr, valuePtr *C.char) {
 
 //export SetBooleanValue
 func SetBooleanValue(fieldPtr, keyPtr *C.char, value bool) {
-	style := m[str(fieldPtr)]
+	style := getStyle(fieldPtr)
 	key := str(keyPtr)
 	boolValue := reflect.ValueOf(value)
 	reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{boolValue})
@@ -105,21 +109,21 @@ func SetBooleanValue(fieldPtr, keyPtr *C.char, value bool) {
 
 //export UnsetRule
 func UnsetRule(fieldPtr, keyPtr *C.char) {
-	style := m[str(fieldPtr)]
+	style := getStyle(fieldPtr)
 	key := str(keyPtr)
 	reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{})
 }
 
 //export GetIntValue
 func GetIntValue(fieldPtr, keyPtr *C.char) int {
-	style := m[str(fieldPtr)]
+	style := getStyle(fieldPtr)
 	key := str(keyPtr)
 	return reflect.ValueOf(style).MethodByName(key).Interface().(int)
 }
 
 //export GetBoolValue
 func GetBoolValue(fieldPtr, keyPtr *C.char) bool {
-	style := m[str(fieldPtr)]
+	style := getStyle(fieldPtr)
 	key := str(keyPtr)
 	return reflect.ValueOf(style).MethodByName(key).Interface().(bool)
 }
@@ -155,13 +159,13 @@ func Height(text *C.char) int {
 
 //export Align
 func Align(fieldPtr *C.char, position float64) {
-	style := m[str(fieldPtr)]
+	style := getStyle(fieldPtr)
 	style.Align(lipgloss.Position(position))
 }
 
 //export Margin
 func Margin(fieldPtr *C.char, margins *C.char) {
-	style := m[str(fieldPtr)]
+	style := getStyle(fieldPtr)
 	var arr []int
 	err := json.Unmarshal([]byte(str(margins)), &arr)
 
@@ -174,7 +178,7 @@ func Margin(fieldPtr *C.char, margins *C.char) {
 
 //export Padding
 func Padding(fieldPtr *C.char, paddings *C.char) {
-	style := m[str(fieldPtr)]
+	style := getStyle(fieldPtr)
 	var arr []int
 	err := json.Unmarshal([]byte(str(paddings)), &arr)
 
@@ -187,7 +191,7 @@ func Padding(fieldPtr *C.char, paddings *C.char) {
 
 //export BorderStyle
 func BorderStyle(fieldPtr, borderStylePtr *C.char) {
-	style := m[str(fieldPtr)]
+	style := getStyle(fieldPtr)
 	borderStyle := str(borderStylePtr)
 
 	if borderStyle == "rounded" {
