@@ -153,7 +153,24 @@ const str = NewStyle()
 
 ## Borders
 
-`TODO`
+Adding borders is easy:
+
+```js
+// Add a purple, rectangular border
+const style = NewStyle()
+  .BorderStyle(lipgloss.NormalBorder())
+  .BorderForeground(lipgloss.Color("63"))
+
+// Set a rounded, yellow-on-purple border to the top and left
+const anotherStyle = NewStyle()
+  .BorderStyle('rounded')
+  .BorderForeground("228")
+  .BorderBackground("63")
+  .BorderTop(true).
+  .BorderLeft(true)
+
+// TODO: Make own border
+```
 
 ## Copying Styles
 

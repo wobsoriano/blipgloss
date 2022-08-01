@@ -12,6 +12,7 @@ const style = blipgloss.NewStyle()
 .Width(30)
 .Padding(1, 4, 2)
 .Align(blipgloss.Position.Right)
+.BorderStyle('rounded')
 
 // console.log(style.Render("Hello, bun."))
 

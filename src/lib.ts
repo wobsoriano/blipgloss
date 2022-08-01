@@ -16,6 +16,8 @@ export enum Position {
 	Right = 1.0
 }
 
+type BorderStyle = 'rounded' | 'double' | 'normal' | 'hidden' | 'thick'
+
 export class Style {
   #handle: number
 
@@ -153,6 +155,11 @@ export class Style {
 
   BorderRightForeground(color: BlipglossColor) {
     return this.SetColorValue('BorderRightForeground', color)
+  }
+
+  BorderStyle(style: BorderStyle) {
+    symbols.BorderStyle(this.#handle, ptr(encode(style)))
+    return this
   }
 
   BorderTop(val: boolean) {

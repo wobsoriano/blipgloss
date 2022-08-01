@@ -85,6 +85,10 @@ export const { symbols } = dlopen(location, {
     args: [FFIType.ptr, FFIType.ptr],
     returns: FFIType.void
   },
+  BorderStyle: {
+    args: [FFIType.ptr, FFIType.ptr],
+    returns: FFIType.void
+  },
   FreeString: {
     args: [FFIType.ptr],
     returns: FFIType.void

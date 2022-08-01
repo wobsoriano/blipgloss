@@ -184,3 +184,21 @@ func Padding(fieldPtr *C.char, paddings *C.char) {
 
 	style.Padding(arr...)
 }
+
+//export BorderStyle
+func BorderStyle(fieldPtr, borderStylePtr *C.char) {
+	style := m[str(fieldPtr)]
+	borderStyle := str(borderStylePtr)
+
+	if borderStyle == "rounded" {
+		style.BorderStyle(lipgloss.RoundedBorder())
+	} else if borderStyle == "double" {
+		style.BorderStyle(lipgloss.DoubleBorder())
+	} else if borderStyle == "normal" {
+		style.BorderStyle(lipgloss.NormalBorder())
+	} else if borderStyle == "hidden" {
+		style.BorderStyle(lipgloss.HiddenBorder())
+	} else if borderStyle == "thick" {
+		style.BorderStyle(lipgloss.ThickBorder())
+	}
+}
