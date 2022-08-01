@@ -159,7 +159,7 @@ Adding borders is easy:
 // Add a purple, rectangular border
 const style = NewStyle()
   .BorderStyle('normal')
-  .BorderForeground(lipgloss.Color("63"))
+  .BorderForeground("63")
 
 // Set a rounded, yellow-on-purple border to the top and left
 const anotherStyle = NewStyle()
