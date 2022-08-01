@@ -110,7 +110,20 @@ const style = NewStyle()
 
 There is also shorthand syntax for margins and padding, which follows the same format as CSS:
 
-`TODO`
+```js
+// 2 cells on all sides
+NewStyle().Padding(2)
+
+// 2 cells on the top and bottom, 4 cells on the left and right
+NewStyle().Margin(2, 4)
+
+// 1 cell on the top, 4 cells on the sides, 2 cells on the bottom
+NewStyle().Padding(1, 4, 2)
+
+// Clockwise, starting from the top: 2 cells on the top, 4 on the right, 3 on
+// the bottom, and 1 on the left
+NewStyle().Margin(2, 4, 3, 1)
+```
 
 ## Aligning Text
 
