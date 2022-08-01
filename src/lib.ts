@@ -181,6 +181,11 @@ export class Style {
     return this.SetBooleanValue('Reverse', val)
   }
 
+  Align(position: Position | number) {
+    symbols.Align(this.#handle, position)
+    return this
+  }
+
   Render(text: string) {
     const textPtr = symbols.Render(this.#handle, ptr(encode(text)))
     const textStr = new CString(textPtr)

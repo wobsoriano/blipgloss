@@ -147,3 +147,9 @@ func Width(text *C.char) int {
 func Height(text *C.char) int {
 	return lipgloss.Height(str(text))
 }
+
+//export Align
+func Align(fieldPtr *C.char, position float64) {
+	style := m[str(fieldPtr)]
+	style.Align(lipgloss.Position(position))
+}

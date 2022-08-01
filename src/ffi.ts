@@ -58,11 +58,11 @@ export const { symbols } = dlopen(location, {
     returns: FFIType.void
   },
   JoinHorizontal: {
-    args: [FFIType.float, FFIType.ptr],
+    args: [FFIType.f64, FFIType.ptr],
     returns: FFIType.ptr
   },
   JoinVertical: {
-    args: [FFIType.float, FFIType.ptr],
+    args: [FFIType.f64, FFIType.ptr],
     returns: FFIType.ptr
   },
   Width: {
@@ -72,6 +72,10 @@ export const { symbols } = dlopen(location, {
   Height: {
     args: [FFIType.ptr],
     returns: FFIType.int
+  },
+  Align: {
+    args: [FFIType.float],
+    returns: FFIType.void
   },
   FreeString: {
     args: [FFIType.ptr],
