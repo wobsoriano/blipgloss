@@ -171,6 +171,10 @@ export class Style {
     return this.SetBooleanValue('BorderRight', val)
   }
 
+  BorderForeground(color: BlipglossColor) {
+    return this.SetColorValue('BorderForeground', color)
+  }
+
   BorderBackground(color: BlipglossColor) {
     return this.SetColorValue('BorderBackground', color)
   }

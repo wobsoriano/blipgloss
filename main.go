@@ -63,7 +63,12 @@ func SetColorValue(fieldPtr, keyPtr, valuePtr *C.char, adaptive bool) {
 
 	if adaptive {
 		adaptiveColor := lipgloss.AdaptiveColor{}
-		json.Unmarshal([]byte(str(valuePtr)), &adaptiveColor)
+		err := json.Unmarshal([]byte(str(valuePtr)), &adaptiveColor)
+
+		if err != nil {
+			panic("Unable to parse color")
+		}
+
 		color := reflect.ValueOf(adaptiveColor)
 		reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{color})
 	} else {
