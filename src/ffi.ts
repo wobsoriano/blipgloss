@@ -74,7 +74,7 @@ export const { symbols } = dlopen(location, {
     returns: FFIType.int
   },
   Align: {
-    args: [FFIType.float],
+    args: [FFIType.ptr, FFIType.float],
     returns: FFIType.void
   },
   Margin: {

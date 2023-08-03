@@ -53,7 +53,7 @@ export class Style {
   // }
 
   private SetBooleanValue(key: string, value: boolean) {
-    symbols.SetBooleanValue(this.#handle, ptr(encode(key)), value ? 1 : 0)
+    symbols.SetBooleanValue(this.#handle, ptr(encode(key)), value)
     return this
   }
 
@@ -201,13 +201,13 @@ export class Style {
     return this.SetColorValue('BorderBackground', color)
   }
 
-  GetBoolValue() {
-    return symbols.GetBoolValue()
-  }
+  // GetBoolValue() {
+  //   return symbols.GetBoolValue()
+  // }
 
-  GetIntValue() {
-    return symbols.GetIntValue()
-  }
+  // GetIntValue() {
+  //   return symbols.GetIntValue()
+  // }
 
   GetBold(): boolean {
     return symbols.GetBoolValue(this.#handle, ptr(encode('GetBold')))
