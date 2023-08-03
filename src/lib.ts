@@ -319,13 +319,11 @@ export class Style {
   }
 
   WithWhitespaceBackground(color: BlipglossColor) {
-    this.SetColorValue('WithWhitespaceBackground', color)
-    return this
+    return this.SetColorValue('WithWhitespaceBackground', color)
   }
 
   WithWhitespaceForeground(color: BlipglossColor) {
-    this.SetColorValue('WithWhitespaceForeground', color)
-    return this
+    return this.SetColorValue('WithWhitespaceForeground', color)
   }
 
   /**
