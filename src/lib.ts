@@ -78,6 +78,10 @@ export class Style {
     return this.SetIntValue('Width', val)
   }
 
+  Height(val: number) {
+    return this.SetIntValue('Height', val)
+  }
+
   Foreground(color: BlipglossColor) {
     return this.SetColorValue('Foreground', color)
   }
