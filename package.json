@@ -35,9 +35,9 @@
   "bugs": "https://github.com/wobsoriano/blipgloss/issues",
   "author": "Robert Soriano <sorianorobertc@gmail.com>",
   "devDependencies": {
-    "bun-types": "^0.3.0",
-    "bumpp": "^8.2.1",
-    "typescript": "^4.7.4",
-    "tsup": "^6.5.0"
+    "bumpp": "^9.1.1",
+    "bun-types": "^0.7.1",
+    "tsup": "^7.2.0",
+    "typescript": "^5.1.6"
   }
 }
