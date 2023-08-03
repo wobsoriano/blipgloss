@@ -1,19 +1,11 @@
 {
   "name": "blipgloss",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "description": "",
   "scripts": {
-    "build": "tsup",
+    "build": "bun run ./build.mjs",
     "build:go": "./build.sh",
     "release": "bumpp --commit --push --tag && npm publish",
     "prepublishOnly": "bun run build",
@@ -35,9 +27,8 @@
   "bugs": "https://github.com/wobsoriano/blipgloss/issues",
   "author": "Robert Soriano <sorianorobertc@gmail.com>",
   "devDependencies": {
-    "bumpp": "^9.1.1",
     "bun-types": "^0.7.1",
-    "tsup": "^7.2.0",
+    "bun-plugin-dts": " ^0.1.0",
     "typescript": "^5.1.6"
   }
 }
