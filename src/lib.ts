@@ -67,10 +67,10 @@ export class Style {
     return this
   }
 
-  // private SetStringValue(key: string, value: string) {
-  //   symbols.SetStringValue(this.#handle, ptr(encode(key)), ptr(encode(value)))
-  //   return this
-  // }
+  private SetStringValue(key: string, value: string) {
+    symbols.SetStringValue(this.#handle, ptr(encode(key)), ptr(encode(value)))
+    return this
+  }
 
   private SetBooleanValue(key: string, value: boolean) {
     symbols.SetBooleanValue(this.#handle, ptr(encode(key)), value)
@@ -316,6 +316,23 @@ export class Style {
 
   MaxHeight(val: number) {
     return this.SetIntValue('MaxHeight', val)
+  }
+
+  WithWhitespaceBackground(color: BlipglossColor) {
+    this.SetColorValue('WithWhitespaceBackground', color)
+    return this
+  }
+
+  WithWhitespaceForeground(color: BlipglossColor) {
+    this.SetColorValue('WithWhitespaceForeground', color)
+    return this
+  }
+
+  /**
+   * Sets the characters to be rendered in the whitespace.
+   */
+  WithWhitespaceChars(char: string) {
+    return this.SetStringValue('WithWhitespaceChars', char)
   }
 }
 
