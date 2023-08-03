@@ -2,11 +2,19 @@ import { CString, ptr } from 'bun:ffi'
 import { symbols } from './ffi'
 import { encode } from './utils'
 
-// type Pointer = number
-type BlipglossColor = string | {
+type AdaptiveColor = {
   Light: string
   Dark: string
 }
+
+type CompleteColor = {
+  True: string
+  ANSI256: string
+  ANSI: string
+}
+
+// type Pointer = number
+type BlipglossColor = string | AdaptiveColor | CompleteColor
 
 export enum Position {
   Top = 0.0,
@@ -41,9 +49,21 @@ export class Style {
   }
 
   private SetColorValue(key: string, value: BlipglossColor) {
-    const adaptive = typeof value !== 'string'
-    const color = adaptive ? ptr(encode(JSON.stringify(value))) : ptr(encode(value))
-    symbols.SetColorValue(this.#handle, ptr(encode(key)), color, adaptive)
+    const isObject = typeof value !== 'string'
+    const color = isObject ? ptr(encode(JSON.stringify(value))) : ptr(encode(value))
+    
+    if (isObject) {
+      if ('Light' in value) {
+        // Adaptive color
+        symbols.SetColorValue(this.#handle, ptr(encode(key)), color, 2)
+      } else {
+        // Complete color
+        symbols.SetColorValue(this.#handle, ptr(encode(key)), color, 3)
+      }
+    } else {
+      symbols.SetColorValue(this.#handle, ptr(encode(key)), color, 1)
+    }
+
     return this
   }
 

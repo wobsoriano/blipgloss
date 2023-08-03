@@ -61,25 +61,36 @@ func Copy(keyPtr *C.char) *C.char {
 }
 
 //export SetColorValue
-func SetColorValue(fieldPtr, keyPtr, valuePtr *C.char, adaptive bool) {
+func SetColorValue(fieldPtr, keyPtr, valuePtr *C.char, colorType int) {
 	style := getStyle(fieldPtr)
 	key := str(keyPtr)
 
-	if adaptive {
+	var color reflect.Value
+
+	switch colorType {
+	case 1:
+		color = reflect.ValueOf(lipgloss.Color(str(valuePtr)))
+	case 2:
 		adaptiveColor := lipgloss.AdaptiveColor{}
 		err := json.Unmarshal([]byte(str(valuePtr)), &adaptiveColor)
 
 		if err != nil {
-			panic("Unable to parse color")
+			panic("Unable to parse adaptive color")
 		}
 
-		color := reflect.ValueOf(adaptiveColor)
-		reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{color})
-	} else {
-		value := lipgloss.Color(str(valuePtr))
-		color := reflect.ValueOf(value)
-		reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{color})
+		color = reflect.ValueOf(adaptiveColor)
+	case 3:
+		completeColor := lipgloss.CompleteColor{}
+		err := json.Unmarshal([]byte(str(valuePtr)), &completeColor)
+
+		if err != nil {
+			panic("Unable to parse complete color")
+		}
+
+		color = reflect.ValueOf(completeColor)
 	}
+
+	reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{color})
 }
 
 //export SetIntValue

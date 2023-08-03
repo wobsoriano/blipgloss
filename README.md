@@ -71,6 +71,18 @@ Background({
 })
 ```
 
+### Complete Colors
+
+CompleteColor specifies exact values for truecolor, ANSI256, and ANSI color profiles.
+
+```js
+Background({
+  True: "#0000FF",
+  ANSI256: "86",
+  ANSI: "5"
+})
+```
+
 The terminal's background color will automatically be detected and the appropriate color will be chosen at runtime.
 
 ## Inline Formatting

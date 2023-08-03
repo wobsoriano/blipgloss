@@ -23,14 +23,4 @@ const style = blipgloss.NewStyle()
   BottomRight: "*",
 })
 
-// console.log(style.Render("Hello, bun."))
-
-// const style2 = style.Copy()
-// .Background({
-//   Light: "#2B2D42",
-//   Dark: "#F8F32B"
-// })
-// .Width(20)
-// .Align(blipgloss.Position.Top)
-
 console.log(style.Render("Hello, bun clone."))
