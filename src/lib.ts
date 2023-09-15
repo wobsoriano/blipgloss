@@ -45,7 +45,7 @@ export class Style {
   }
 
   static NewStyle() {
-    return new Style(symbols.NewStyle())
+    return new Style(symbols.NewStyle()!)
   }
 
   private SetColorValue(key: string, value: BlipglossColor) {
@@ -248,13 +248,13 @@ export class Style {
 
   Render(text: string) {
     const textPtr = symbols.Render(this.#handle, ptr(encode(text)))
-    const textStr = new CString(textPtr)
+    const textStr = new CString(textPtr!)
     symbols.FreeString(textStr.ptr)
     return textStr.toString()
   }
 
   Copy() {
-    return new Style(symbols.Copy(this.#handle))
+    return new Style(symbols.Copy(this.#handle)!)
   }
 
   FreeHandle() {
@@ -353,14 +353,14 @@ function combineArgs(args: string[]) {
 
 export function JoinHorizontal(position: Position | number, ...paragraphs: string[]) {
   const textPtr = symbols.JoinHorizontal(position, ptr(encode(combineArgs(paragraphs))))
-  const textStr = new CString(textPtr)
+  const textStr = new CString(textPtr!)
   symbols.FreeString(textStr.ptr)
   return textStr.toString()
 }
 
 export function JoinVertical(position: Position | number, ...paragraphs: string[]) {
   const textPtr = symbols.JoinVertical(position, ptr(encode(combineArgs(paragraphs))))
-  const textStr = new CString(textPtr)
+  const textStr = new CString(textPtr!)
   symbols.FreeString(textStr.ptr)
   return textStr.toString()
 }
