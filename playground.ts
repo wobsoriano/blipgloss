@@ -24,7 +24,7 @@ const divider = blipgloss.NewStyle()
   .SetString('.')
   .Padding(0, 11)
   .Foreground(subtle)
-  .String(subtle)
+  .String()
 
 const url = blipgloss.NewStyle().Foreground(special).Render
 

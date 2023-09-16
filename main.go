@@ -206,6 +206,62 @@ func Padding(fieldPtr *C.char, paddings *C.char) {
 	style.Padding(arr...)
 }
 
+func whichSidesBool(i ...bool) (top, right, bottom, left bool, ok bool) {
+	switch len(i) {
+	case 1:
+		top = i[0]
+		bottom = i[0]
+		left = i[0]
+		right = i[0]
+		ok = true
+	case 2:
+		top = i[0]
+		bottom = i[0]
+		left = i[1]
+		right = i[1]
+		ok = true
+	case 3:
+		top = i[0]
+		left = i[1]
+		right = i[1]
+		bottom = i[2]
+		ok = true
+	case 4:
+		top = i[0]
+		right = i[1]
+		bottom = i[2]
+		left = i[3]
+		ok = true
+	}
+	return top, right, bottom, left, ok
+}
+
+//export Border
+func Border(fieldPtr, borderStylePtr *C.char, sides ...bool) {
+	style := getStyle(fieldPtr)
+	borderStyle := str(borderStylePtr)
+
+	top, right, bottom, left, ok := whichSidesBool(sides...)
+	if !ok {
+		top = true
+		right = true
+		bottom = true
+		left = true
+	}
+
+	if borderStyle == "rounded" {
+		style.Border(lipgloss.RoundedBorder(), top, right, bottom, left)
+	} else if borderStyle == "double" {
+		style.Border(lipgloss.DoubleBorder(), top, right, bottom, left)
+	} else if borderStyle == "normal" {
+		style.Border(lipgloss.NormalBorder(), top, right, bottom, left)
+	} else if borderStyle == "hidden" {
+		style.Border(lipgloss.HiddenBorder(), top, right, bottom, left)
+	} else if borderStyle == "thick" {
+		style.Border(lipgloss.ThickBorder(), top, right, bottom, left)
+	}
+}
+
 //export BorderStyle
 func BorderStyle(fieldPtr, borderStylePtr *C.char) {
 	style := getStyle(fieldPtr)

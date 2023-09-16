@@ -1,6 +1,6 @@
 import { CString, ptr } from 'bun:ffi'
 import { symbols } from './ffi'
-import { encode } from './utils'
+import { encode, whichSidesBool } from './utils'
 
 export type AdaptiveColor = {
   Light: string
@@ -200,6 +200,19 @@ export class Style {
 
   BorderRightForeground(color: BlipglossColor) {
     return this.SetColorValue('BorderRightForeground', color)
+  }
+
+  Border(style: BorderStyle, ...args: boolean[]) {
+    let [top, right, bottom, left, ok] = whichSidesBool(...args)
+
+    if (!ok) {
+      top = true
+      right = true
+      bottom = true
+      left = true
+    }
+
+    symbols.Border(this.#handle, ptr(encode(style)), top, right, bottom, left)
   }
 
   BorderStyle(style: BorderStyle) {
