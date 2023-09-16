@@ -3,7 +3,7 @@ module github.com/wobsoriano/blipgloss
 go 1.18
 
 require (
-	github.com/charmbracelet/lipgloss v0.7.1
+	github.com/charmbracelet/lipgloss v0.8.0
 	github.com/jaevor/go-nanoid v1.3.0
 )
 
