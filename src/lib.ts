@@ -361,6 +361,11 @@ export class Style {
     symbols.Inherit(this.#handle, ptr(encode(style.#handle)))
     return this
   }
+
+  Underline(value: boolean) {
+    symbols.Underline(this.#handle, value)
+    return this
+  }
 }
 
 export function NewStyle() {

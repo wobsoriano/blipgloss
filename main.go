@@ -299,3 +299,9 @@ func Inherit(fieldPtr, stylePtr *C.char) {
 	styleToInherit := getStyle(stylePtr)
 	style.Inherit(styleToInherit)
 }
+
+//export Underline
+func Underline(fieldPtr *C.char, value bool) {
+	style := getStyle(fieldPtr)
+	style.Underline(value)
+}
