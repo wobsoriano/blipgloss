@@ -213,6 +213,7 @@ export class Style {
     }
 
     symbols.Border(this.#handle, ptr(encode(style)), top, right, bottom, left)
+    return this
   }
 
   BorderStyle(style: BorderStyle) {
