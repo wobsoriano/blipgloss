@@ -81,6 +81,17 @@ export class Style {
     return this
   }
 
+  SetString(text: string) {
+    return this.SetStringValue('SetString', text)
+  }
+
+  String() {
+    const textPtr = symbols.String(this.#handle)
+    const textStr = new CString(textPtr!)
+    symbols.FreeString(textStr.ptr)
+    return textStr.toString()
+  }
+
   Bold(val: boolean) {
     return this.SetBooleanValue('Bold', val)
   }

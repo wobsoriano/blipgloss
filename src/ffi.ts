@@ -21,6 +21,10 @@ export const { symbols } = dlopen(location, {
     args: [FFIType.ptr, FFIType.ptr],
     returns: FFIType.ptr
   },
+  String: {
+    args: [FFIType.ptr],
+    returns: FFIType.ptr
+  },
   Copy: {
     args: [FFIType.ptr],
     returns: FFIType.ptr
