@@ -41,7 +41,7 @@ func getStyle(fieldPtr *C.char) lipgloss.Style {
 func NewStyle() *C.char {
 	canonic, _ := nanoid.Standard(10)
 	uniqueId := canonic()
-	styleMap[uniqueId] = lipgloss.NewStyle().Copy()
+	styleMap[uniqueId] = lipgloss.NewStyle()
 	return ch(uniqueId)
 }
 
@@ -237,11 +237,11 @@ func whichSidesBool(i ...bool) (top, right, bottom, left bool, ok bool) {
 }
 
 //export Border
-func Border(fieldPtr, borderStylePtr *C.char, sides ...bool) {
+func Border(fieldPtr, borderStylePtr *C.char, top, right, bottom, left bool) {
 	style := getStyle(fieldPtr)
 	borderStyle := str(borderStylePtr)
 
-	top, right, bottom, left, ok := whichSidesBool(sides...)
+	top, right, bottom, left, ok := whichSidesBool(top, right, bottom, left)
 	if !ok {
 		top = true
 		right = true
@@ -293,7 +293,7 @@ func CustomBorder(fieldPtr, valuePtr *C.char) {
 	style.BorderStyle(border)
 }
 
-// export Inherit
+//export Inherit
 func Inherit(fieldPtr, stylePtr *C.char) {
 	style := getStyle(fieldPtr)
 	styleToInherit := getStyle(stylePtr)

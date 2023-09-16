@@ -24,7 +24,7 @@ const divider = blipgloss.NewStyle()
   .SetString('.')
   .Padding(0, 11)
   .Foreground(subtle)
-  .String()
+// .String()
 
 const url = blipgloss.NewStyle().Foreground(special).Render
 
@@ -137,7 +137,7 @@ function listDone(s: string) {
 // Paragraphs/History.
 
 const historyStyle = blipgloss.NewStyle().
-  Align('Left').
+  Align(blipgloss.Position.Left).
   Foreground('#FAFAFA').
   Background(highlight).
   Margin(1, 3, 0, 0).
@@ -164,4 +164,34 @@ const statusStyle = blipgloss.NewStyle().
 
 const encodingStyle = statusNugget.Copy().
   Background('#A550DF').
-  Align('Right')
+  Align(blipgloss.Position.Right)
+
+const statusText = blipgloss.NewStyle().Inherit(statusBarStyle)
+
+const fishCakeStyle = statusNugget.Copy().Background('#6124DF')
+
+// Page.
+
+const docStyle = blipgloss.NewStyle().Padding(1, 2, 1, 2)
+
+function init() {
+  const doc: string[] = []
+
+  // Tabs
+  {
+    let row = blipgloss.JoinHorizontal(
+      blipgloss.Position.Top,
+      activeTab.Render("Lip Gloss"),
+      tab.Render("Blush"),
+      tab.Render("Eye Shadow"),
+      tab.Render("Mascara"),
+      tab.Render("Foundation"),
+    )
+    const gapWidth = Math.max(0, width - blipgloss.Width(row) - 2);
+    const gap = tabGap.Render(Array(gapWidth).fill(" ").join(""))
+    row = blipgloss.JoinHorizontal(blipgloss.Position.Bottom, row, gap)
+    doc.push(row + "\n\n")
+  }
+}
+
+init()
