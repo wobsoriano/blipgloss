@@ -2,26 +2,25 @@ import { CString, ptr } from 'bun:ffi'
 import { symbols } from './ffi'
 import { encode } from './utils'
 
-type AdaptiveColor = {
+export type AdaptiveColor = {
   Light: string
   Dark: string
 }
 
-type CompleteColor = {
+export type CompleteColor = {
   True: string
   ANSI256: string
   ANSI: string
 }
 
-// type Pointer = number
-type BlipglossColor = string | AdaptiveColor | CompleteColor
+export type BlipglossColor = string | AdaptiveColor | CompleteColor
 
 export enum Position {
   Top = 0.0,
-	Bottom = 1.0,
-	Center = 0.5,
-	Left = 0.0,
-	Right = 1.0
+  Bottom = 1.0,
+  Center = 0.5,
+  Left = 0.0,
+  Right = 1.0
 }
 
 export type CustomBorder = {
@@ -51,7 +50,7 @@ export class Style {
   private SetColorValue(key: string, value: BlipglossColor) {
     const isObject = typeof value !== 'string'
     const color = isObject ? ptr(encode(JSON.stringify(value))) : ptr(encode(value))
-    
+
     if (isObject) {
       if ('Light' in value) {
         // Adaptive color

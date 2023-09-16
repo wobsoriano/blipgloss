@@ -51,6 +51,18 @@ func Render(keyPtr *C.char, text *C.char) *C.char {
 	return ch(m[key].Render(str(text)))
 }
 
+//export SetString
+func SetString(keyPtr *C.char, text *C.char) {
+	key := str(keyPtr)
+	m[key].SetString(str(text))
+}
+
+//export String
+func String(keyPtr *C.char) *C.char {
+	key := str(keyPtr)
+	return ch(m[key].String())
+}
+
 //export Copy
 func Copy(keyPtr *C.char) *C.char {
 	key := str(keyPtr)
