@@ -363,8 +363,7 @@ export class Style {
   }
 
   Underline(value: boolean) {
-    symbols.Underline(this.#handle, value)
-    return this
+    return this.SetBooleanValue('Underline', value)
   }
 }
 

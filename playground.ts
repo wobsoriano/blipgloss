@@ -192,6 +192,70 @@ function init() {
     row = blipgloss.JoinHorizontal(blipgloss.Position.Bottom, row, gap)
     doc.push(row + "\n\n")
   }
+
+  // Title
+  { }
+
+  // Dialog
+  {
+    const okButton = activeButtonStyle.Render('Yes')
+    const cancelButton = buttonStyle.Render('Maybe')
+
+    const question = blipgloss.NewStyle().Width(50).Align(blipgloss.Position.Center).Render("Are you sure you want to eat marmalade?")
+    const buttons = blipgloss.JoinHorizontal(blipgloss.Position.Top, okButton, cancelButton)
+    const ui = blipgloss.JoinVertical(blipgloss.Position.Center, question, buttons)
+
+    const dialog = blipgloss.Place(width, 9,
+      blipgloss.Position.Center, blipgloss.Position.Center,
+      dialogBoxStyle.Render(ui),
+      blipgloss.WithWhitespaceChars("猫咪"),
+      blipgloss.WithWhitespaceForeground(subtle),
+    )
+
+    doc.push(dialog + "\n\n")
+  }
+
+  // Color grid
+  { }
+
+  // Marmalade history
+  {
+    const historyA = "The Romans learned from the Greeks that quinces slowly cooked with honey would “set” when cool. The Apicius gives a recipe for preserving whole quinces, stems and leaves attached, in a bath of honey diluted with defrutum: Roman marmalade. Preserves of quince and lemon appear (along with rose, apple, plum and pear) in the Book of ceremonies of the Byzantine Emperor Constantine VII Porphyrogennetos.";
+    const historyB = "Medieval quince preserves, which went by the French name cotignac, produced in a clear version and a fruit pulp version, began to lose their medieval seasoning of spices in the 16th century. In the 17th century, La Varenne provided recipes for both thick and clear cotignac.";
+    const historyC = "In 1524, Henry VIII, King of England, received a “box of marmalade” from Mr. Hull of Exeter. This was probably marmelada, a solid quince paste from Portugal, still made and sold in southern Europe today. It became a favourite treat of Anne Boleyn and her ladies in waiting.";
+
+    doc.push(blipgloss.JoinHorizontal(
+      blipgloss.Position.Top,
+      historyStyle.Copy().Align(blipgloss.Position.Right).Render(historyA),
+      historyStyle.Copy().Align(blipgloss.Position.Center).Render(historyB),
+      historyStyle.Copy().MarginRight(0).Render(historyC),
+    ))
+
+    doc.push("\n\n")
+  }
+
+  // Status bar
+  {
+    const w = blipgloss.Width
+
+    const statusKey = statusStyle.Render("STATUS")
+    const encoding = encodingStyle.Render("UTF-8")
+    const fishCake = fishCakeStyle.Render("🍥 Fish Cake")
+    const statusVal = statusText.Copy().
+      Width(width - w(statusKey) - w(encoding) - w(fishCake)).
+      Render("Ravishing")
+
+    const bar = blipgloss.JoinHorizontal(blipgloss.Position.Top,
+      statusKey,
+      statusVal,
+      encoding,
+      fishCake,
+    )
+
+    doc.push(statusBarStyle.Width(width).Render(bar))
+  }
+
+  console.log(doc)
 }
 
 init()
