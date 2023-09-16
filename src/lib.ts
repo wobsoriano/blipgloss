@@ -356,6 +356,11 @@ export class Style {
   WithWhitespaceChars(char: string) {
     return this.SetStringValue('WithWhitespaceChars', char)
   }
+
+  Inherit(style: Style) {
+    symbols.Inherit(this.#handle, ptr(encode(style.#handle)))
+    return this
+  }
 }
 
 export function NewStyle() {

@@ -104,5 +104,9 @@ export const { symbols } = dlopen(location, {
   FreeString: {
     args: [FFIType.ptr],
     returns: FFIType.void
+  },
+  Inherit: {
+    args: [FFIType.ptr, FFIType.ptr],
+    returns: FFIType.void
   }
 })

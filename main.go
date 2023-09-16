@@ -16,7 +16,7 @@ import (
 	"github.com/jaevor/go-nanoid"
 )
 
-var m map[string]lipgloss.Style = map[string]lipgloss.Style{}
+var styleMap map[string]lipgloss.Style = map[string]lipgloss.Style{}
 
 func main() {}
 
@@ -34,27 +34,27 @@ func FreeString(str *C.char) {
 }
 
 func getStyle(fieldPtr *C.char) lipgloss.Style {
-	return m[str(fieldPtr)]
+	return styleMap[str(fieldPtr)]
 }
 
 //export NewStyle
 func NewStyle() *C.char {
 	canonic, _ := nanoid.Standard(10)
 	uniqueId := canonic()
-	m[uniqueId] = lipgloss.NewStyle().Copy()
+	styleMap[uniqueId] = lipgloss.NewStyle().Copy()
 	return ch(uniqueId)
 }
 
 //export Render
 func Render(keyPtr *C.char, text *C.char) *C.char {
 	key := str(keyPtr)
-	return ch(m[key].Render(str(text)))
+	return ch(styleMap[key].Render(str(text)))
 }
 
 //export String
 func String(keyPtr *C.char) *C.char {
 	key := str(keyPtr)
-	return ch(m[key].String())
+	return ch(styleMap[key].String())
 }
 
 //export Copy
@@ -62,7 +62,7 @@ func Copy(keyPtr *C.char) *C.char {
 	key := str(keyPtr)
 	canonic, _ := nanoid.Standard(10)
 	uniqueId := canonic()
-	m[uniqueId] = m[key].Copy()
+	styleMap[uniqueId] = styleMap[key].Copy()
 	return ch(uniqueId)
 }
 
@@ -291,4 +291,11 @@ func CustomBorder(fieldPtr, valuePtr *C.char) {
 	}
 
 	style.BorderStyle(border)
+}
+
+// export Inherit
+func Inherit(fieldPtr, stylePtr *C.char) {
+	style := getStyle(fieldPtr)
+	styleToInherit := getStyle(stylePtr)
+	style.Inherit(styleToInherit)
 }
