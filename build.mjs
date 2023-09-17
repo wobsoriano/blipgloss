@@ -18,6 +18,7 @@ if (output.success) {
   console.log('Compiling native binaries...')
   const proc = Bun.spawnSync([
     XGO,
+    "-go", "1.20.3",
     "-out", "release/blipgloss",
     "--targets=" + TARGETS,
     "-ldflags=-s -w",

@@ -109,4 +109,20 @@ export const { symbols } = dlopen(location, {
     args: [FFIType.ptr, FFIType.ptr],
     returns: FFIType.void
   },
+  WithWhitespaceChars: {
+    args: [FFIType.ptr],
+    returns: FFIType.ptr
+  },
+  WithWhitespaceBackground: {
+    args: [FFIType.ptr, FFIType.int],
+    returns: FFIType.ptr
+  },
+  WithWhitespaceForeground: {
+    args: [FFIType.ptr, FFIType.int],
+    returns: FFIType.ptr
+  },
+  Place: {
+    args: [FFIType.int, FFIType.int, FFIType.f64, FFIType.f64, FFIType.ptr, FFIType.ptr],
+    returns: FFIType.ptr
+  }
 })

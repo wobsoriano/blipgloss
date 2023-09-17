@@ -17,6 +17,7 @@ import (
 )
 
 var styleMap map[string]lipgloss.Style = map[string]lipgloss.Style{}
+var whitespaceMap map[string]lipgloss.WhitespaceOption = map[string]lipgloss.WhitespaceOption{}
 
 func main() {}
 
@@ -66,45 +67,74 @@ func Copy(keyPtr *C.char) *C.char {
 	return ch(uniqueId)
 }
 
-//export SetColorValue
-func SetColorValue(fieldPtr, keyPtr, valuePtr *C.char, colorType int) {
-	style := getStyle(fieldPtr)
-	key := str(keyPtr)
+//export WithWhitespaceChars
+func WithWhitespaceChars(strPtr *C.char) *C.char {
+	canonic, _ := nanoid.Standard(10)
+	uniqueId := canonic()
+	whitespaceMap[uniqueId] = lipgloss.WithWhitespaceChars(str(strPtr))
+	return ch(uniqueId)
+}
 
-	var color reflect.Value
+//export WithWhitespaceBackground
+func WithWhitespaceBackground(valuePtr *C.char, colorType int) *C.char {
+	canonic, _ := nanoid.Standard(10)
+	uniqueId := canonic()
+	color := SetColor(str(valuePtr), colorType)
+	whitespaceMap[uniqueId] = lipgloss.WithWhitespaceBackground(color)
+	return ch(uniqueId)
+}
+
+//export WithWhitespaceForeground
+func WithWhitespaceForeground(valuePtr *C.char, colorType int) *C.char {
+	canonic, _ := nanoid.Standard(10)
+	uniqueId := canonic()
+	color := SetColor(str(valuePtr), colorType)
+	whitespaceMap[uniqueId] = lipgloss.WithWhitespaceForeground(color)
+	return ch(uniqueId)
+}
+
+func SetColor(value string, colorType int) lipgloss.TerminalColor {
+	var color lipgloss.TerminalColor
 
 	switch colorType {
 	case 1:
-		color = reflect.ValueOf(lipgloss.Color(str(valuePtr)))
+		color = lipgloss.Color(value)
 	case 2:
 		adaptiveColor := lipgloss.AdaptiveColor{}
-		err := json.Unmarshal([]byte(str(valuePtr)), &adaptiveColor)
+		err := json.Unmarshal([]byte(value), &adaptiveColor)
 
 		if err != nil {
 			panic("Unable to parse adaptive color")
 		}
-
-		color = reflect.ValueOf(adaptiveColor)
+		color = adaptiveColor
 	case 3:
 		completeColor := lipgloss.CompleteColor{}
-		err := json.Unmarshal([]byte(str(valuePtr)), &completeColor)
+		err := json.Unmarshal([]byte(value), &completeColor)
 
 		if err != nil {
 			panic("Unable to parse complete color")
 		}
-
-		color = reflect.ValueOf(completeColor)
+		color = completeColor
 	}
+	return color
+}
 
-	reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{color})
+//export SetColorValue
+func SetColorValue(fieldPtr, keyPtr, valuePtr *C.char, colorType int) {
+	style := getStyle(fieldPtr)
+	method := str(keyPtr)
+
+	color := reflect.ValueOf(SetColor(str(valuePtr), colorType))
+
+	reflect.ValueOf(style).MethodByName(method).Call([]reflect.Value{color})
 }
 
 //export SetIntValue
 func SetIntValue(fieldPtr, keyPtr *C.char, value int) {
 	style := getStyle(fieldPtr)
-	key := str(keyPtr)
+	method := str(keyPtr)
 	intValue := reflect.ValueOf(value)
-	reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{intValue})
+	reflect.ValueOf(style).MethodByName(method).Call([]reflect.Value{intValue})
 }
 
 //export SetStringValue
@@ -298,4 +328,18 @@ func Inherit(fieldPtr, stylePtr *C.char) {
 	style := getStyle(fieldPtr)
 	styleToInherit := getStyle(stylePtr)
 	style.Inherit(styleToInherit)
+}
+
+//export Place
+func Place(width, height int, hPos, vPos float64, strPtr, whitespaceOptionPtr *C.char) *C.char {
+	whitespaceOption := strings.Split(str(whitespaceOptionPtr), ",")
+	var convertedOptions []lipgloss.WhitespaceOption
+
+	// Loop through the array and convert the whitespace options
+	for _, optionStr := range whitespaceOption {
+		convertedOptions = append(convertedOptions, whitespaceMap[optionStr])
+	}
+
+	joined := lipgloss.Place(width, height, lipgloss.Position(hPos), lipgloss.Position(vPos), str(strPtr), convertedOptions...)
+	return ch(joined)
 }

@@ -1,4 +1,4 @@
-import { CString, ptr } from 'bun:ffi'
+import { CString, Pointer, ptr } from 'bun:ffi'
 import { symbols } from './ffi'
 import { encode, whichSidesBool } from './utils'
 
@@ -342,21 +342,6 @@ export class Style {
     return this.SetIntValue('MaxHeight', val)
   }
 
-  WithWhitespaceBackground(color: BlipglossColor) {
-    return this.SetColorValue('WithWhitespaceBackground', color)
-  }
-
-  WithWhitespaceForeground(color: BlipglossColor) {
-    return this.SetColorValue('WithWhitespaceForeground', color)
-  }
-
-  /**
-   * Sets the characters to be rendered in the whitespace.
-   */
-  WithWhitespaceChars(char: string) {
-    return this.SetStringValue('WithWhitespaceChars', char)
-  }
-
   Inherit(style: Style) {
     symbols.Inherit(this.#handle, ptr(encode(style.#handle)))
     return this
@@ -384,18 +369,24 @@ function combineArgs(args: string[]) {
   return args.join(",");
 }
 
-export function JoinHorizontal(position: Position | number, ...paragraphs: string[]) {
-  const textPtr = symbols.JoinHorizontal(position, ptr(encode(combineArgs(paragraphs))))
-  const textStr = new CString(textPtr!)
+function getStringAndFreePtr(textPtr: Pointer | null) {
+  if (!textPtr) {
+    throw new Error('Pointer required')
+  }
+
+  const textStr = new CString(textPtr)
   symbols.FreeString(textStr.ptr)
   return textStr.toString()
 }
 
+export function JoinHorizontal(position: Position | number, ...paragraphs: string[]) {
+  const textPtr = symbols.JoinHorizontal(position, ptr(encode(combineArgs(paragraphs))))
+  return getStringAndFreePtr(textPtr)
+}
+
 export function JoinVertical(position: Position | number, ...paragraphs: string[]) {
   const textPtr = symbols.JoinVertical(position, ptr(encode(combineArgs(paragraphs))))
-  const textStr = new CString(textPtr!)
-  symbols.FreeString(textStr.ptr)
-  return textStr.toString()
+  return getStringAndFreePtr(textPtr)
 }
 
 export function Width(text: string): number {
@@ -404,4 +395,47 @@ export function Width(text: string): number {
 
 export function Height(text: string): number {
   return symbols.Height(ptr(encode(text)))
+}
+
+function getColor(value: BlipglossColor) {
+  const isObject = typeof value !== 'string'
+
+  if (isObject) {
+    if ('Light' in value) {
+      // Adaptive color
+      return 2
+    }
+
+    // Complete color
+    return 3
+  }
+
+  return 1
+}
+
+export function WithWhitespaceBackground(value: BlipglossColor) {
+  const isObject = typeof value !== 'string'
+  const colorType = getColor(value)
+  const color = isObject ? ptr(encode(JSON.stringify(value))) : ptr(encode(value))
+  const textPtr = symbols.WithWhitespaceBackground(color, colorType)
+  return getStringAndFreePtr(textPtr)
+}
+
+export function WithWhitespaceForeground(value: BlipglossColor) {
+  const isObject = typeof value !== 'string'
+  const colorType = getColor(value)
+  const color = isObject ? ptr(encode(JSON.stringify(value))) : ptr(encode(value))
+  const textPtr = symbols.WithWhitespaceForeground(color, colorType)
+  return getStringAndFreePtr(textPtr)
+}
+
+export function WithWhitespaceChars(char: string) {
+  const textPtr = symbols.WithWhitespaceChars(ptr(encode(char)))
+  return getStringAndFreePtr(textPtr)
+}
+
+export function Place(width: number, height: number, hPos: number, vPos: number, str: string, ...whitespaceOptions: string[]) {
+  const combinedOptions = whitespaceOptions.join(',')
+  const textPtr = symbols.Place(width, height, hPos, vPos, ptr(encode(str)), ptr(encode(combinedOptions)))
+  return getStringAndFreePtr(textPtr);
 }
