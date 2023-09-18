@@ -1,4 +1,5 @@
 import * as blipgloss from './src'
+import Color from 'color'
 import type { AdaptiveColor, CustomBorder } from './src'
 
 const width = 96
@@ -24,9 +25,9 @@ const divider = blipgloss.NewStyle()
   .SetString('.')
   .Padding(0, 11)
   .Foreground(subtle)
-// .String()
+  .String()
 
-const url = blipgloss.NewStyle().Foreground(special).Render
+const url = (text: string) => blipgloss.NewStyle().Foreground(special).Render(text)
 
 // Tabs.
 
@@ -113,14 +114,14 @@ const list = blipgloss.NewStyle().
   Height(8).
   Width(columnWidth + 1)
 
-const listHeader = blipgloss.NewStyle().
+const listHeader = (text: string) => blipgloss.NewStyle().
   BorderStyle('normal').
   BorderBottom(true).
   BorderForeground(subtle).
   MarginRight(2).
-  Render
+  Render(text)
 
-const listItem = blipgloss.NewStyle().PaddingLeft(2).Render
+const listItem = (text: string) => blipgloss.NewStyle().PaddingLeft(2).Render(text)
 
 const checkMark = blipgloss.NewStyle().SetString("✓").
   Foreground(special).
@@ -172,10 +173,11 @@ const fishCakeStyle = statusNugget.Copy().Background('#6124DF')
 
 // Page.
 
-const docStyle = blipgloss.NewStyle().Padding(1, 2, 1, 2)
+let docStyle = blipgloss.NewStyle().Padding(1, 2, 1, 2)
 
 function init() {
   const doc: string[] = []
+  const physicalWidth = 106
 
   // Tabs
   {
@@ -189,14 +191,38 @@ function init() {
     )
     const gapWidth = Math.max(0, width - blipgloss.Width(row) - 2);
     const gap = tabGap.Render(Array(gapWidth).fill(" ").join(""))
+    // console.log('gap', gap)
     row = blipgloss.JoinHorizontal(blipgloss.Position.Bottom, row, gap)
-    doc.push(row + "\n\n")
+    doc.push(row)
   }
 
   // Title
-  { }
+  {
+    const colors = colorGrid(1, 5)
+    let title = ''
+    const offset = 2
 
-  // Dialog
+    for (let i = 0; i < colors.length; i++) {
+      const c = colors[i][0]
+      const marginLeft = i * offset;
+
+      title += titleStyle.Copy().MarginLeft(marginLeft).Background(c).String()
+
+      if (i < colors.length - 1) {
+        title += '\n';
+      }
+    }
+
+    const desc = blipgloss.JoinVertical(blipgloss.Position.Left,
+			descStyle.Render("Style Definitions for Nice Terminal Layouts"),
+			infoStyle.Render("From Charm" + divider + url("https://github.com/charmbracelet/lipgloss")),
+		)
+
+		const row = blipgloss.JoinHorizontal(blipgloss.Position.Top, title, desc)
+    doc.push(row)
+  }
+
+  // // Dialog
   {
     const okButton = activeButtonStyle.Render('Yes')
     const cancelButton = buttonStyle.Render('Maybe')
@@ -212,11 +238,51 @@ function init() {
       blipgloss.WithWhitespaceForeground(subtle),
     )
 
-    doc.push(dialog + "\n\n")
+    doc.push(dialog)
   }
 
   // Color grid
-  { }
+  {
+    const colors = (() => {
+      const colors = colorGrid(14, 8);
+      let b = ''
+    
+      for (const row of colors) {
+        for (const color of row) {
+          const s = blipgloss.NewStyle().SetString("  ").Background(color)
+          b += s.String()
+        }
+        b += '\n';
+      }
+    
+      return b;
+    })();
+    
+    const lists = blipgloss.JoinHorizontal(blipgloss.Position.Top,
+      list.Render(
+        blipgloss.JoinVertical(blipgloss.Position.Left,
+          listHeader("Citrus Fruits to Try"),
+          listDone("Grapefruit"),
+          listDone("Yuzu"),
+          listItem("Citron"),
+          listItem("Kumquat"),
+          listItem("Pomelo"),
+        ),
+      ),
+      list.Copy().Width(columnWidth).Render(
+        blipgloss.JoinVertical(blipgloss.Position.Left,
+          listHeader("Actual Lip Gloss Vendors"),
+          listItem("Glossier"),
+          listItem("Claire‘s Boutique"),
+          listDone("Nyx"),
+          listItem("Mac"),
+          listDone("Milk"),
+        ),
+      ),
+    )
+
+    doc.push(blipgloss.JoinHorizontal(blipgloss.Position.Top, lists, colors))
+  }
 
   // Marmalade history
   {
@@ -255,7 +321,39 @@ function init() {
     doc.push(statusBarStyle.Width(width).Render(bar))
   }
 
-  console.log(doc)
+	if (physicalWidth > 0) {
+		docStyle = docStyle.MaxWidth(physicalWidth)
+	}
+
+  console.log(docStyle.Render(doc.join('\n\n')))
 }
 
 init()
+
+function colorGrid(xSteps: number, ySteps: number) {
+  const x0y0 = Color('#F25D94');
+  const x1y0 = Color('#EDFF82');
+  const x0y1 = Color('#643AFF');
+  const x1y1 = Color('#14F9D5');
+
+  const x0 = new Array(ySteps);
+  for (let i = 0; i < ySteps; i++) {
+    x0[i] = x0y0.mix(x0y1, i / ySteps);
+  }
+
+  const x1 = new Array(ySteps);
+  for (let i = 0; i < ySteps; i++) {
+    x1[i] = x1y0.mix(x1y1, i / ySteps);
+  }
+
+  const grid = new Array(ySteps);
+  for (let x = 0; x < ySteps; x++) {
+    const y0 = x0[x];
+    grid[x] = new Array(xSteps);
+    for (let y = 0; y < xSteps; y++) {
+      grid[x][y] = y0.mix(x1[x], y / xSteps).hex();
+    }
+  }
+
+  return grid;
+}

@@ -87,9 +87,7 @@ export class Style {
 
   String() {
     const textPtr = symbols.String(this.#handle)
-    const textStr = new CString(textPtr!)
-    symbols.FreeString(textStr.ptr)
-    return textStr.toString()
+    return getStringAndFreePtr(textPtr)
   }
 
   Bold(val: boolean) {
@@ -212,7 +210,12 @@ export class Style {
       left = true
     }
 
-    symbols.Border(this.#handle, ptr(encode(style)), top, right, bottom, left)
+    if (typeof style === 'string') {
+      symbols.Border(this.#handle, ptr(encode(style)), top, right, bottom, left)
+    } else {
+      symbols.Border(this.#handle, ptr(encode(JSON.stringify(style))), top, right, bottom, left)
+    }
+
     return this
   }
 
@@ -380,12 +383,12 @@ function getStringAndFreePtr(textPtr: Pointer | null) {
 }
 
 export function JoinHorizontal(position: Position | number, ...paragraphs: string[]) {
-  const textPtr = symbols.JoinHorizontal(position, ptr(encode(combineArgs(paragraphs))))
+  const textPtr = symbols.JoinHorizontal(position, ptr(encode(JSON.stringify(paragraphs))))
   return getStringAndFreePtr(textPtr)
 }
 
 export function JoinVertical(position: Position | number, ...paragraphs: string[]) {
-  const textPtr = symbols.JoinVertical(position, ptr(encode(combineArgs(paragraphs))))
+  const textPtr = symbols.JoinVertical(position, ptr(encode(JSON.stringify(paragraphs))))
   return getStringAndFreePtr(textPtr)
 }
 
@@ -435,7 +438,7 @@ export function WithWhitespaceChars(char: string) {
 }
 
 export function Place(width: number, height: number, hPos: number, vPos: number, str: string, ...whitespaceOptions: string[]) {
-  const combinedOptions = whitespaceOptions.join(',')
+  const combinedOptions = combineArgs(whitespaceOptions)
   const textPtr = symbols.Place(width, height, hPos, vPos, ptr(encode(str)), ptr(encode(combinedOptions)))
   return getStringAndFreePtr(textPtr);
 }

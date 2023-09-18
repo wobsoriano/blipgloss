@@ -27,8 +27,10 @@
   "bugs": "https://github.com/wobsoriano/blipgloss/issues",
   "author": "Robert Soriano <sorianorobertc@gmail.com>",
   "devDependencies": {
+    "@types/color": "^3.0.4",
     "bun-plugin-dts": "^0.2.0",
     "bun-types": "^1.0.2",
+    "color": "^4.2.3",
     "typescript": "^5.2.2"
   }
 }

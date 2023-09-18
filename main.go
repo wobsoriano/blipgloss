@@ -42,14 +42,14 @@ func getStyle(fieldPtr *C.char) lipgloss.Style {
 func NewStyle() *C.char {
 	canonic, _ := nanoid.Standard(10)
 	uniqueId := canonic()
-	styleMap[uniqueId] = lipgloss.NewStyle()
+	styleMap[uniqueId] = lipgloss.NewStyle().Copy()
 	return ch(uniqueId)
 }
 
 //export Render
 func Render(keyPtr *C.char, text *C.char) *C.char {
-	key := str(keyPtr)
-	return ch(styleMap[key].Render(str(text)))
+	style := getStyle(keyPtr)
+	return ch(style.Render(str(text)))
 }
 
 //export String
@@ -182,14 +182,26 @@ func HasDarkBackground() bool {
 
 //export JoinHorizontal
 func JoinHorizontal(position float64, paragraphs *C.char) *C.char {
-	arr := strings.Split(str(paragraphs), ",")
+	var arr []string
+	err := json.Unmarshal([]byte(str(paragraphs)), &arr)
+
+	if err != nil {
+		panic("Unable to parse paragraphs")
+	}
+
 	joined := lipgloss.JoinHorizontal(lipgloss.Position(position), arr...)
 	return ch(joined)
 }
 
 //export JoinVertical
 func JoinVertical(position float64, paragraphs *C.char) *C.char {
-	arr := strings.Split(str(paragraphs), ",")
+	var arr []string
+	err := json.Unmarshal([]byte(str(paragraphs)), &arr)
+
+	if err != nil {
+		panic("Unable to parse paragraphs")
+	}
+
 	joined := lipgloss.JoinVertical(lipgloss.Position(position), arr...)
 	return ch(joined)
 }
@@ -267,29 +279,34 @@ func whichSidesBool(i ...bool) (top, right, bottom, left bool, ok bool) {
 }
 
 //export Border
-func Border(fieldPtr, borderStylePtr *C.char, top, right, bottom, left bool) {
+func Border(fieldPtr, valuePtr *C.char, top, right, bottom, left bool) {
 	style := getStyle(fieldPtr)
-	borderStyle := str(borderStylePtr)
 
-	top, right, bottom, left, ok := whichSidesBool(top, right, bottom, left)
-	if !ok {
-		top = true
-		right = true
-		bottom = true
-		left = true
+	var border lipgloss.Border
+	value := str(valuePtr)
+
+	if value == "rounded" {
+		border = lipgloss.RoundedBorder()
+	} else if value == "double" {
+		border = lipgloss.DoubleBorder()
+	} else if value == "normal" {
+		border = lipgloss.NormalBorder()
+	} else if value == "hidden" {
+		border = lipgloss.HiddenBorder()
+	} else if value == "thick" {
+		border = lipgloss.ThickBorder()
+	} else {
+		jsonBorder := lipgloss.Border{}
+		err := json.Unmarshal([]byte(value), &jsonBorder)
+
+		if err != nil {
+			panic(err)
+		}
+
+		border = jsonBorder
 	}
 
-	if borderStyle == "rounded" {
-		style.Border(lipgloss.RoundedBorder(), top, right, bottom, left)
-	} else if borderStyle == "double" {
-		style.Border(lipgloss.DoubleBorder(), top, right, bottom, left)
-	} else if borderStyle == "normal" {
-		style.Border(lipgloss.NormalBorder(), top, right, bottom, left)
-	} else if borderStyle == "hidden" {
-		style.Border(lipgloss.HiddenBorder(), top, right, bottom, left)
-	} else if borderStyle == "thick" {
-		style.Border(lipgloss.ThickBorder(), top, right, bottom, left)
-	}
+	style.Border(border, top, right, bottom, left)
 }
 
 //export BorderStyle
