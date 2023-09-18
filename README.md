@@ -168,14 +168,16 @@ const str = NewStyle()
 Adding borders is easy:
 
 ```js
+import { NewStyle, Border } from 'blipgloss'
+
 // Add a purple, rectangular border
 const style = NewStyle()
-  .BorderStyle('normal')
+  .BorderStyle(Border.Normal)
   .BorderForeground("63")
 
 // Set a rounded, yellow-on-purple border to the top and left
 const anotherStyle = NewStyle()
-  .BorderStyle('rounded')
+  .BorderStyle(Border.Rounded)
   .BorderForeground("228")
   .BorderBackground("63")
   .BorderTop(true).

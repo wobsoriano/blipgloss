@@ -34,7 +34,15 @@ export type CustomBorder = {
   BottomRight?: string
 }
 
-export type BorderStyle = 'rounded' | 'double' | 'normal' | 'hidden' | 'thick' | CustomBorder
+export enum Border {
+  Rounded = 'rounded',
+  Double = 'double',
+  Normal = 'normal',
+  Hidden = 'hidden',
+  Thick = 'thick'
+}
+
+export type BorderStyle = Border | CustomBorder
 
 export class Style {
   #handle: number
@@ -369,10 +377,6 @@ export function HasDarkBackground(): boolean {
 
 // Utilities
 
-function combineArgs(args: string[]) {
-  return args.join(",");
-}
-
 function getStringAndFreePtr(textPtr: Pointer | null) {
   if (!textPtr) {
     throw new Error('Pointer required')
@@ -439,7 +443,7 @@ export function WithWhitespaceChars(char: string) {
 }
 
 export function Place(width: number, height: number, hPos: number, vPos: number, str: string, ...whitespaceOptions: string[]) {
-  const combinedOptions = combineArgs(whitespaceOptions)
+  const combinedOptions = whitespaceOptions.join(',')
   const textPtr = symbols.Place(width, height, hPos, vPos, ptr(encode(str)), ptr(encode(combinedOptions)))
   return getStringAndFreePtr(textPtr);
 }

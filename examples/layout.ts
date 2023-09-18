@@ -77,14 +77,14 @@ const titleStyle = blipgloss.NewStyle().
 const descStyle = blipgloss.NewStyle().MarginTop(1)
 
 const infoStyle = blipgloss.NewStyle().
-  BorderStyle('normal').
+  BorderStyle(blipgloss.Border.Normal).
   BorderTop(true).
   BorderForeground(subtle)
 
 // Dialog.
 
 const dialogBoxStyle = blipgloss.NewStyle().
-  Border('rounded').
+  Border(blipgloss.Border.Rounded).
   BorderForeground('#874BFD').
   Padding(1, 0).
   BorderTop(true).
@@ -107,14 +107,14 @@ const activeButtonStyle = buttonStyle.Copy().
 // List.
 
 const list = blipgloss.NewStyle().
-  Border('normal', false, true, false, false).
+  Border(blipgloss.Border.Normal, false, true, false, false).
   BorderForeground(subtle).
   MarginRight(2).
   Height(8).
   Width(columnWidth + 1)
 
 const listHeader = (text: string) => blipgloss.NewStyle().
-  BorderStyle('normal').
+  BorderStyle(blipgloss.Border.Normal).
   BorderBottom(true).
   BorderForeground(subtle).
   MarginRight(2).
