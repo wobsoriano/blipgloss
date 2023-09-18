@@ -245,36 +245,6 @@ func Padding(fieldPtr *C.char, paddings *C.char) {
 	style.Padding(arr...)
 }
 
-func whichSidesBool(i ...bool) (top, right, bottom, left bool, ok bool) {
-	switch len(i) {
-	case 1:
-		top = i[0]
-		bottom = i[0]
-		left = i[0]
-		right = i[0]
-		ok = true
-	case 2:
-		top = i[0]
-		bottom = i[0]
-		left = i[1]
-		right = i[1]
-		ok = true
-	case 3:
-		top = i[0]
-		left = i[1]
-		right = i[1]
-		bottom = i[2]
-		ok = true
-	case 4:
-		top = i[0]
-		right = i[1]
-		bottom = i[2]
-		left = i[3]
-		ok = true
-	}
-	return top, right, bottom, left, ok
-}
-
 //export Border
 func Border(fieldPtr, valuePtr *C.char, top, right, bottom, left bool) {
 	style := getStyle(fieldPtr)
