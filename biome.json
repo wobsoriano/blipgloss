@@ -17,5 +17,8 @@
 			"semicolons": "always",
 			"quoteStyle": "single"
 		}
+	},
+	"files": {
+		"ignore": ["dist"]
 	}
 }
