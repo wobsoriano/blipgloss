@@ -2,6 +2,8 @@
 
 Style definitions for nice terminal layouts. Powered by [lipgloss](https://github.com/charmbracelet/lipgloss) and `bun:ffi`.
 
+![Blipgloss example](https://i.imgur.com/zW4nYM5.png)
+
 ## Install
 
 ```bash
