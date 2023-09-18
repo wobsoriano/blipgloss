@@ -135,6 +135,24 @@ export const { symbols } = dlopen(location, {
 		],
 		returns: FFIType.ptr,
 	},
+	PlaceVertical: {
+		args: [
+			FFIType.int,
+			FFIType.f64,
+			FFIType.ptr,
+			FFIType.ptr,
+		],
+		returns: FFIType.ptr,
+	},
+	PlaceHorizontal: {
+		args: [
+			FFIType.int,
+			FFIType.f64,
+			FFIType.ptr,
+			FFIType.ptr,
+		],
+		returns: FFIType.ptr,
+	},
 	SetString: {
 		args: [FFIType.ptr, FFIType.ptr],
 		returns: FFIType.void,

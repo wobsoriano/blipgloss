@@ -475,3 +475,35 @@ export function Place(
 	);
 	return getStringAndFreePtr(textPtr);
 }
+
+export function PlaceHorizontal(
+	width: number,
+	pos: number,
+	str: string,
+	...whitespaceOptions: string[]
+) {
+	const combinedOptions = whitespaceOptions.join(',');
+	const textPtr = symbols.PlaceHorizontal(
+		width,
+		pos,
+		ptr(encode(str)),
+		ptr(encode(combinedOptions)),
+	);
+	return getStringAndFreePtr(textPtr);
+}
+
+export function PlaceVertical(
+	height: number,
+	pos: number,
+	str: string,
+	...whitespaceOptions: string[]
+) {
+	const combinedOptions = whitespaceOptions.join(',');
+	const textPtr = symbols.PlaceVertical(
+		height,
+		pos,
+		ptr(encode(str)),
+		ptr(encode(combinedOptions)),
+	);
+	return getStringAndFreePtr(textPtr);
+}

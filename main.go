@@ -335,3 +335,31 @@ func Place(width, height int, hPos, vPos float64, strPtr, whitespaceOptionPtr *C
 	joined := lipgloss.Place(width, height, lipgloss.Position(hPos), lipgloss.Position(vPos), str(strPtr), convertedOptions...)
 	return ch(joined)
 }
+
+//export PlaceHorizontal
+func PlaceHorizontal(width int, pos float64, strPtr, whitespaceOptionPtr *C.char) *C.char {
+	whitespaceOption := strings.Split(str(whitespaceOptionPtr), ",")
+	var convertedOptions []lipgloss.WhitespaceOption
+
+	// Loop through the array and convert the whitespace options
+	for _, optionStr := range whitespaceOption {
+		convertedOptions = append(convertedOptions, whitespaceMap[optionStr])
+	}
+
+	joined := lipgloss.PlaceHorizontal(width, lipgloss.Position(pos), str(strPtr), convertedOptions...)
+	return ch(joined)
+}
+
+//export PlaceVertical
+func PlaceVertical(height int, pos float64, strPtr, whitespaceOptionPtr *C.char) *C.char {
+	whitespaceOption := strings.Split(str(whitespaceOptionPtr), ",")
+	var convertedOptions []lipgloss.WhitespaceOption
+
+	// Loop through the array and convert the whitespace options
+	for _, optionStr := range whitespaceOption {
+		convertedOptions = append(convertedOptions, whitespaceMap[optionStr])
+	}
+
+	joined := lipgloss.PlaceVertical(height, lipgloss.Position(pos), str(strPtr), convertedOptions...)
+	return ch(joined)
+}
