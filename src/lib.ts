@@ -13,7 +13,12 @@ export type CompleteColor = {
   ANSI: string
 }
 
-export type BlipglossColor = string | AdaptiveColor | CompleteColor
+export type CompleteAdaptiveColor = {
+  Light: CompleteColor
+  Dark: CompleteColor
+}
+
+export type BlipglossColor = string | AdaptiveColor | CompleteColor | CompleteAdaptiveColor
 
 export enum Position {
   Top = 0.0,
@@ -59,19 +64,38 @@ export class Style {
     const isObject = typeof value !== 'string'
     const color = isObject ? ptr(encode(JSON.stringify(value))) : ptr(encode(value))
 
-    if (isObject) {
-      if ('Light' in value) {
-        // Adaptive color
-        symbols.SetColorValue(this.#handle, ptr(encode(key)), color, 2)
-      } else {
-        // Complete color
-        symbols.SetColorValue(this.#handle, ptr(encode(key)), color, 3)
-      }
-    } else {
+    if (!isObject){
       symbols.SetColorValue(this.#handle, ptr(encode(key)), color, 1)
+      return this
     }
 
-    return this
+    if ('Light' in value && 'Dark' in value) {
+      if (
+        // @ts-expect-error: Better type checking
+        'True' in value.Light &&
+        'ANSI256' in value.Light &&
+        'ANSI' in value.Light &&
+        // @ts-expect-error: Better type checking
+        'True' in value.Dark &&
+        'ANSI256' in value.Dark &&
+        'ANSI' in value.Dark
+      ) {
+        // value is of type CompleteAdaptiveColor
+        symbols.SetColorValue(this.#handle, ptr(encode(key)), color, 4)
+      } else {
+        // value is of type AdaptiveColor
+        symbols.SetColorValue(this.#handle, ptr(encode(key)), color, 2)
+      }
+      return this
+    }
+    
+    if ('True' in value && 'ANSI256' in value && 'ANSI' in value) {
+      // value is of type CompleteColor
+      symbols.SetColorValue(this.#handle, ptr(encode(key)), color, 3)
+      return this
+    }
+
+    throw new Error('Incorrect color type: Must be of type string, AdaptiveColor, CompleteColor, or CompleteAdaptiveColor.');
   }
 
   private SetBooleanValue(key: string, value: boolean) {

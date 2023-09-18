@@ -38,10 +38,14 @@ func getStyle(fieldPtr *C.char) lipgloss.Style {
 	return styleMap[str(fieldPtr)]
 }
 
+func generateUniqueId() string {
+	canonic, _ := nanoid.Standard(10)
+	return canonic()
+}
+
 //export NewStyle
 func NewStyle() *C.char {
-	canonic, _ := nanoid.Standard(10)
-	uniqueId := canonic()
+	uniqueId := generateUniqueId()
 	styleMap[uniqueId] = lipgloss.NewStyle().Copy()
 	return ch(uniqueId)
 }
@@ -61,39 +65,35 @@ func String(keyPtr *C.char) *C.char {
 //export Copy
 func Copy(keyPtr *C.char) *C.char {
 	key := str(keyPtr)
-	canonic, _ := nanoid.Standard(10)
-	uniqueId := canonic()
+	uniqueId := generateUniqueId()
 	styleMap[uniqueId] = styleMap[key].Copy()
 	return ch(uniqueId)
 }
 
 //export WithWhitespaceChars
 func WithWhitespaceChars(strPtr *C.char) *C.char {
-	canonic, _ := nanoid.Standard(10)
-	uniqueId := canonic()
+	uniqueId := generateUniqueId()
 	whitespaceMap[uniqueId] = lipgloss.WithWhitespaceChars(str(strPtr))
 	return ch(uniqueId)
 }
 
 //export WithWhitespaceBackground
 func WithWhitespaceBackground(valuePtr *C.char, colorType int) *C.char {
-	canonic, _ := nanoid.Standard(10)
-	uniqueId := canonic()
-	color := SetColor(str(valuePtr), colorType)
+	uniqueId := generateUniqueId()
+	color := GetColorByType(str(valuePtr), colorType)
 	whitespaceMap[uniqueId] = lipgloss.WithWhitespaceBackground(color)
 	return ch(uniqueId)
 }
 
 //export WithWhitespaceForeground
 func WithWhitespaceForeground(valuePtr *C.char, colorType int) *C.char {
-	canonic, _ := nanoid.Standard(10)
-	uniqueId := canonic()
-	color := SetColor(str(valuePtr), colorType)
+	uniqueId := generateUniqueId()
+	color := GetColorByType(str(valuePtr), colorType)
 	whitespaceMap[uniqueId] = lipgloss.WithWhitespaceForeground(color)
 	return ch(uniqueId)
 }
 
-func SetColor(value string, colorType int) lipgloss.TerminalColor {
+func GetColorByType(value string, colorType int) lipgloss.TerminalColor {
 	var color lipgloss.TerminalColor
 
 	switch colorType {
@@ -115,6 +115,14 @@ func SetColor(value string, colorType int) lipgloss.TerminalColor {
 			panic("Unable to parse complete color")
 		}
 		color = completeColor
+	case 4:
+		completeAdaptiveColor := lipgloss.CompleteAdaptiveColor{}
+		err := json.Unmarshal([]byte(value), &completeAdaptiveColor)
+
+		if err != nil {
+			panic("Unable to parse complete adaptive color")
+		}
+		color = completeAdaptiveColor
 	}
 	return color
 }
@@ -124,7 +132,7 @@ func SetColorValue(fieldPtr, keyPtr, valuePtr *C.char, colorType int) {
 	style := getStyle(fieldPtr)
 	method := str(keyPtr)
 
-	color := reflect.ValueOf(SetColor(str(valuePtr), colorType))
+	color := reflect.ValueOf(GetColorByType(str(valuePtr), colorType))
 
 	reflect.ValueOf(style).MethodByName(method).Call([]reflect.Value{color})
 }
@@ -267,7 +275,7 @@ func Border(fieldPtr, valuePtr *C.char, top, right, bottom, left bool) {
 		err := json.Unmarshal([]byte(value), &jsonBorder)
 
 		if err != nil {
-			panic(err)
+			panic("Unable to parse custom border")
 		}
 
 		border = jsonBorder
