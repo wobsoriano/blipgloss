@@ -1,6 +1,6 @@
-import { CString, Pointer, ptr } from 'bun:ffi';
 import { symbols } from './ffi';
-import { encode, whichSidesBool, getColorType } from './utils';
+import { encode, getColorType, whichSidesBool } from './utils';
+import { CString, Pointer, ptr } from 'bun:ffi';
 
 export type AdaptiveColor = {
 	Light: string;

@@ -1,4 +1,4 @@
-import { dlopen, FFIType, suffix } from 'bun:ffi';
+import { FFIType, dlopen, suffix } from 'bun:ffi';
 
 const { platform, arch } = process;
 
