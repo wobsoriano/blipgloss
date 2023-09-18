@@ -37,10 +37,6 @@ export const { symbols } = dlopen(location, {
     args: [FFIType.ptr, FFIType.ptr, FFIType.int],
     returns: FFIType.void
   },
-  SetStringValue: {
-    args: [FFIType.ptr, FFIType.ptr, FFIType.ptr],
-    returns: FFIType.void
-  },
   SetBooleanValue: {
     args: [FFIType.ptr, FFIType.ptr, FFIType.bool],
     returns: FFIType.void

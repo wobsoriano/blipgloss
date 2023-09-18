@@ -74,11 +74,6 @@ export class Style {
     return this
   }
 
-  // private SetStringValue(key: string, value: string) {
-  //   symbols.SetStringValue(this.#handle, ptr(encode(key)), ptr(encode(value)))
-  //   return this
-  // }
-
   private SetBooleanValue(key: string, value: boolean) {
     symbols.SetBooleanValue(this.#handle, ptr(encode(key)), value)
     return this

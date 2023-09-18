@@ -22,8 +22,10 @@ const special: AdaptiveColor = {
 }
 
 const divider = blipgloss.NewStyle()
+  // .SetString("•")
   .Padding(0, 1)
   .Foreground(subtle)
+  // .String()
   .Render('•')
 
 const url = (text: string) => blipgloss.NewStyle().Foreground(special).Render(text)
@@ -176,7 +178,7 @@ let docStyle = blipgloss.NewStyle().Padding(1, 2, 1, 2)
 
 function init() {
   const doc: string[] = []
-  const physicalWidth = 106
+  const physicalWidth = process.stdout.columns
 
   // Tabs
   {

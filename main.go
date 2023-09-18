@@ -137,14 +137,6 @@ func SetIntValue(fieldPtr, keyPtr *C.char, value int) {
 	reflect.ValueOf(style).MethodByName(method).Call([]reflect.Value{intValue})
 }
 
-//export SetStringValue
-func SetStringValue(fieldPtr, keyPtr, valuePtr *C.char) {
-	style := getStyle(fieldPtr)
-	key := str(keyPtr)
-	value := reflect.ValueOf(str(valuePtr))
-	reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{value})
-}
-
 //export SetString
 func SetString(fieldPtr, valuePtr *C.char) {
 	style := getStyle(fieldPtr)
