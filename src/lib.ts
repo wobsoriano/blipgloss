@@ -64,18 +64,19 @@ export class Style {
     const isObject = typeof value !== 'string'
     const color = isObject ? ptr(encode(JSON.stringify(value))) : ptr(encode(value))
 
-    if (!isObject){
+    if (!isObject) {
+      // value is of type string
       symbols.SetColorValue(this.#handle, ptr(encode(key)), color, 1)
       return this
     }
 
     if ('Light' in value && 'Dark' in value) {
       if (
-        // @ts-expect-error: Better type checking
+        typeof value.Light !== 'string' &&
         'True' in value.Light &&
         'ANSI256' in value.Light &&
         'ANSI' in value.Light &&
-        // @ts-expect-error: Better type checking
+        typeof value.Dark !== 'string' &&
         'True' in value.Dark &&
         'ANSI256' in value.Dark &&
         'ANSI' in value.Dark
