@@ -9,6 +9,8 @@
     "build:go": "./build.sh",
     "release": "bumpp --commit --push --tag && npm publish",
     "prepublishOnly": "bun run build",
+    "lint": "biome check src",
+    "format": "biome format src --write",
     "test": "bun wiptest"
   },
   "files": [
