@@ -216,7 +216,7 @@ function init() {
 
     const desc = blipgloss.JoinVertical(blipgloss.Position.Left,
 			descStyle.Render("Style Definitions for Nice Terminal Layouts"),
-			infoStyle.Render("From Charm" + divider + url("https://github.com/charmbracelet/lipgloss")),
+			infoStyle.Render(`From Charm${divider}${url("https://github.com/charmbracelet/lipgloss")}`),
 		)
 
 		const row = blipgloss.JoinHorizontal(blipgloss.Position.Top, title, desc)

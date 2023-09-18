@@ -20,7 +20,7 @@ if (output.success) {
     XGO,
     "-go", "1.20.3",
     "-out", "release/blipgloss",
-    "--targets=" + TARGETS,
+    `--targets=${TARGETS}`,
     "-ldflags=-s -w",
     "-buildmode=c-shared",
     ".",
