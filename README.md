@@ -281,6 +281,25 @@ const width = Width(block)
 const height = Height(block)
 ```
 
+### Placing Text in Whitespace
+
+Sometimes you’ll simply want to place a block of text in whitespace.
+
+```js
+import { PlaceHorizontal, PlaceVertical, Place, Position } from 'blipgloss'
+
+// Center a paragraph horizontally in a space 80 cells wide. The height of
+// the block returned will be as tall as the input paragraph.
+const block = PlaceHorizontal(80, Position.Center, fancyStyledParagraph)
+
+// Place a paragraph at the bottom of a space 30 cells tall. The width of
+// the text block returned will be as wide as the input paragraph.
+const block = PlaceVertical(30, Position.Bottom, fancyStyledParagraph)
+
+// Place a paragraph in the bottom right corner of a 30x80 cell space.
+const block = Place(30, 80, Position.Right, Position.Bottom, fancyStyledParagraph)
+```
+
 ## License
 
 MIT
