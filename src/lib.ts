@@ -240,11 +240,8 @@ export class Style {
 	}
 
 	BorderStyle(style: BorderStyle) {
-		if (typeof style === 'string') {
-			symbols.BorderStyle(this.#handle, ptr(encode(style)));
-		} else {
-			symbols.CustomBorder(this.#handle, ptr(encode(JSON.stringify(style))));
-		}
+    const styleString = typeof style === 'string' ? style : JSON.stringify(style)
+    symbols.BorderStyle(this.#handle, ptr(encode(styleString)));
 		return this;
 	}
 

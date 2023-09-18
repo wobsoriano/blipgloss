@@ -253,10 +253,7 @@ func Padding(fieldPtr *C.char, paddings *C.char) {
 	style.Padding(arr...)
 }
 
-//export Border
-func Border(fieldPtr, valuePtr *C.char, top, right, bottom, left bool) {
-	style := getStyle(fieldPtr)
-
+func GetBorderStyleByPointerValue(valuePtr *C.char) lipgloss.Border {
 	var border lipgloss.Border
 	value := str(valuePtr)
 
@@ -281,37 +278,20 @@ func Border(fieldPtr, valuePtr *C.char, top, right, bottom, left bool) {
 		border = jsonBorder
 	}
 
+	return border
+}
+
+//export Border
+func Border(fieldPtr, valuePtr *C.char, top, right, bottom, left bool) {
+	style := getStyle(fieldPtr)
+	border := GetBorderStyleByPointerValue(valuePtr)
 	style.Border(border, top, right, bottom, left)
 }
 
 //export BorderStyle
-func BorderStyle(fieldPtr, borderStylePtr *C.char) {
+func BorderStyle(fieldPtr, valuePtr *C.char) {
 	style := getStyle(fieldPtr)
-	borderStyle := str(borderStylePtr)
-
-	if borderStyle == "rounded" {
-		style.BorderStyle(lipgloss.RoundedBorder())
-	} else if borderStyle == "double" {
-		style.BorderStyle(lipgloss.DoubleBorder())
-	} else if borderStyle == "normal" {
-		style.BorderStyle(lipgloss.NormalBorder())
-	} else if borderStyle == "hidden" {
-		style.BorderStyle(lipgloss.HiddenBorder())
-	} else if borderStyle == "thick" {
-		style.BorderStyle(lipgloss.ThickBorder())
-	}
-}
-
-//export CustomBorder
-func CustomBorder(fieldPtr, valuePtr *C.char) {
-	style := getStyle(fieldPtr)
-	border := lipgloss.Border{}
-	err := json.Unmarshal([]byte(str(valuePtr)), &border)
-
-	if err != nil {
-		panic("Unable to parse custom border")
-	}
-
+	border := GetBorderStyleByPointerValue(valuePtr)
 	style.BorderStyle(border)
 }
 
