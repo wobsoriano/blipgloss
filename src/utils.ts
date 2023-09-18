@@ -1,5 +1,6 @@
 import { CString } from 'bun:ffi'
 import { symbols } from './ffi'
+import { BlipglossColor } from './lib'
 
 const utf8e = new TextEncoder()
 
@@ -48,4 +49,36 @@ export function whichSidesBool(...args: boolean[]) {
   }
 
   return [top, right, bottom, left, ok];
+}
+
+export function getColorType(value: BlipglossColor) {
+  if (typeof value === 'string') {
+    return 1
+  }
+
+  if ('Light' in value && 'Dark' in value) {
+    if (
+      typeof value.Light !== 'string' &&
+      'True' in value.Light &&
+      'ANSI256' in value.Light &&
+      'ANSI' in value.Light &&
+      typeof value.Dark !== 'string' &&
+      'True' in value.Dark &&
+      'ANSI256' in value.Dark &&
+      'ANSI' in value.Dark
+    ) {
+      // CompleteAdaptiveColor
+      return 4
+    }
+
+    // AdaptiveColor
+    return 2
+  }
+  
+  if ('True' in value && 'ANSI256' in value && 'ANSI' in value) {
+    // CompleteColor
+    return 3
+  }
+
+  throw new Error('Incorrect color type: Must be of type string, AdaptiveColor, CompleteColor, or CompleteAdaptiveColor.');
 }

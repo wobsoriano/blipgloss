@@ -83,6 +83,17 @@ Background({
 })
 ```
 
+### Complete Adaptive Colors
+
+You can use CompleteColor with AdaptiveColor to specify the exact values for light and dark backgrounds without automatic color degradation.
+
+```js
+Background({
+  Light: {TrueColor: "#d7ffae", ANSI256: "193", ANSI: "11"},
+  Dark: {TrueColor: "#d75fee", ANSI256: "163", ANSI: "5"}
+})
+```
+
 The terminal's background color will automatically be detected and the appropriate color will be chosen at runtime.
 
 ## Inline Formatting

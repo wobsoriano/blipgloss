@@ -1,6 +1,6 @@
 import { CString, Pointer, ptr } from 'bun:ffi'
 import { symbols } from './ffi'
-import { encode, whichSidesBool } from './utils'
+import { encode, whichSidesBool, getColorType } from './utils'
 
 export type AdaptiveColor = {
   Light: string
@@ -61,42 +61,10 @@ export class Style {
   }
 
   private SetColorValue(key: string, value: BlipglossColor) {
-    const isObject = typeof value !== 'string'
-    const color = isObject ? ptr(encode(JSON.stringify(value))) : ptr(encode(value))
-
-    if (!isObject) {
-      // value is of type string
-      symbols.SetColorValue(this.#handle, ptr(encode(key)), color, 1)
-      return this
-    }
-
-    if ('Light' in value && 'Dark' in value) {
-      if (
-        typeof value.Light !== 'string' &&
-        'True' in value.Light &&
-        'ANSI256' in value.Light &&
-        'ANSI' in value.Light &&
-        typeof value.Dark !== 'string' &&
-        'True' in value.Dark &&
-        'ANSI256' in value.Dark &&
-        'ANSI' in value.Dark
-      ) {
-        // value is of type CompleteAdaptiveColor
-        symbols.SetColorValue(this.#handle, ptr(encode(key)), color, 4)
-      } else {
-        // value is of type AdaptiveColor
-        symbols.SetColorValue(this.#handle, ptr(encode(key)), color, 2)
-      }
-      return this
-    }
-    
-    if ('True' in value && 'ANSI256' in value && 'ANSI' in value) {
-      // value is of type CompleteColor
-      symbols.SetColorValue(this.#handle, ptr(encode(key)), color, 3)
-      return this
-    }
-
-    throw new Error('Incorrect color type: Must be of type string, AdaptiveColor, CompleteColor, or CompleteAdaptiveColor.');
+    const colorType = getColorType(value)
+    const color = colorType !== 1 ? ptr(encode(JSON.stringify(value))) : ptr(encode(value))
+    symbols.SetColorValue(this.#handle, ptr(encode(key)), color, colorType)
+    return this
   }
 
   private SetBooleanValue(key: string, value: boolean) {
@@ -425,34 +393,16 @@ export function Height(text: string): number {
   return symbols.Height(ptr(encode(text)))
 }
 
-function getColor(value: BlipglossColor) {
-  const isObject = typeof value !== 'string'
-
-  if (isObject) {
-    if ('Light' in value) {
-      // Adaptive color
-      return 2
-    }
-
-    // Complete color
-    return 3
-  }
-
-  return 1
-}
-
 export function WithWhitespaceBackground(value: BlipglossColor) {
-  const isObject = typeof value !== 'string'
-  const colorType = getColor(value)
-  const color = isObject ? ptr(encode(JSON.stringify(value))) : ptr(encode(value))
+  const colorType = getColorType(value)
+  const color = colorType !== 1 ? ptr(encode(JSON.stringify(value))) : ptr(encode(value))
   const textPtr = symbols.WithWhitespaceBackground(color, colorType)
   return getStringAndFreePtr(textPtr)
 }
 
 export function WithWhitespaceForeground(value: BlipglossColor) {
-  const isObject = typeof value !== 'string'
-  const colorType = getColor(value)
-  const color = isObject ? ptr(encode(JSON.stringify(value))) : ptr(encode(value))
+  const colorType = getColorType(value)
+  const color = colorType !== 1 ? ptr(encode(JSON.stringify(value))) : ptr(encode(value))
   const textPtr = symbols.WithWhitespaceForeground(color, colorType)
   return getStringAndFreePtr(textPtr)
 }
