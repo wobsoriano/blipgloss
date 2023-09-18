@@ -373,7 +373,7 @@ export class Style {
 	}
 
 	Inherit(style: Style) {
-		symbols.Inherit(this.#handle, ptr(encode(style.#handle)));
+		symbols.Inherit(this.#handle, style.#handle);
 		return this;
 	}
 
