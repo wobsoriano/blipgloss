@@ -1,6 +1,6 @@
-import * as blipgloss from './src'
+import * as blipgloss from '../src'
 import Color from 'color'
-import type { AdaptiveColor, CustomBorder } from './src'
+import type { AdaptiveColor, CustomBorder } from '../src'
 
 const width = 96
 const columnWidth = 30
@@ -22,10 +22,9 @@ const special: AdaptiveColor = {
 }
 
 const divider = blipgloss.NewStyle()
-  .SetString('.')
-  .Padding(0, 11)
+  .Padding(0, 1)
   .Foreground(subtle)
-  .String()
+  .Render('•')
 
 const url = (text: string) => blipgloss.NewStyle().Foreground(special).Render(text)
 
@@ -72,8 +71,8 @@ const titleStyle = blipgloss.NewStyle().
   MarginRight(5).
   Padding(0, 1).
   Italic(true).
-  Foreground('#FFF7DB').
-  SetString('Lip Gloss')
+  Foreground('#FFF7DB')
+  // SetString('Lip Gloss')
 
 const descStyle = blipgloss.NewStyle().MarginTop(1)
 
@@ -123,10 +122,10 @@ const listHeader = (text: string) => blipgloss.NewStyle().
 
 const listItem = (text: string) => blipgloss.NewStyle().PaddingLeft(2).Render(text)
 
-const checkMark = blipgloss.NewStyle().SetString("✓").
+const checkMark = blipgloss.NewStyle().
   Foreground(special).
   PaddingRight(1).
-  String()
+  Render("✓")
 
 function listDone(s: string) {
   return checkMark + blipgloss.NewStyle().
@@ -206,7 +205,7 @@ function init() {
       const c = colors[i][0]
       const marginLeft = i * offset;
 
-      title += titleStyle.Copy().MarginLeft(marginLeft).Background(c).String()
+      title += titleStyle.Copy().MarginLeft(marginLeft).Background(c).Render('Lip Gloss')
 
       if (i < colors.length - 1) {
         title += '\n';
@@ -249,8 +248,8 @@ function init() {
     
       for (const row of colors) {
         for (const color of row) {
-          const s = blipgloss.NewStyle().SetString("  ").Background(color)
-          b += s.String()
+          const s = blipgloss.NewStyle().Background(color)
+          b += s.Render("  ")
         }
         b += '\n';
       }
@@ -296,8 +295,6 @@ function init() {
       historyStyle.Copy().Align(blipgloss.Position.Center).Render(historyB),
       historyStyle.Copy().MarginRight(0).Render(historyC),
     ))
-
-    doc.push("\n\n")
   }
 
   // Status bar

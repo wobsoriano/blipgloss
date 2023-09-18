@@ -141,9 +141,14 @@ func SetIntValue(fieldPtr, keyPtr *C.char, value int) {
 func SetStringValue(fieldPtr, keyPtr, valuePtr *C.char) {
 	style := getStyle(fieldPtr)
 	key := str(keyPtr)
-	value := str(valuePtr)
-	color := reflect.ValueOf(value)
-	reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{color})
+	value := reflect.ValueOf(str(valuePtr))
+	reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{value})
+}
+
+//export SetString
+func SetString(fieldPtr, valuePtr *C.char) {
+	style := getStyle(fieldPtr)
+	style.SetString(str(valuePtr))
 }
 
 //export SetBooleanValue
