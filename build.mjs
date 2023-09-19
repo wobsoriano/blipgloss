@@ -8,6 +8,7 @@ const output = await Bun.build({
   plugins: [
     dts()
   ],
+  target: 'bun'
 })
 
 

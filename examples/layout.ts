@@ -1,6 +1,6 @@
 import * as blipgloss from '../src'
 import Color from 'color'
-import type { AdaptiveColor, CustomBorder } from '../src'
+import type { AdaptiveColor, CustomBorder } from '../dist'
 
 const width = 96
 const columnWidth = 30
