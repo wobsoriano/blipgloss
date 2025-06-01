@@ -1,6 +1,7 @@
 import * as blipgloss from '../src'
 import Color from 'color'
-import type { AdaptiveColor, CustomBorder } from '../dist'
+import type { AdaptiveColor, CustomBorder } from '../src'
+import { encode } from '../src/utils';
 
 const width = 96
 const columnWidth = 30
@@ -59,9 +60,9 @@ const tab = blipgloss.NewStyle()
   .BorderForeground(highlight)
   .Padding(0, 1)
 
-const activeTab = tab.Copy().Border(activeTabBorder, true)
+const activeTab = tab.Border(activeTabBorder, true)
 
-const tabGap = tab.Copy()
+const tabGap = tab
   .BorderTop(false)
   .BorderLeft(false)
   .BorderRight(false)
@@ -100,7 +101,7 @@ const buttonStyle = blipgloss.NewStyle().
   Padding(0, 3).
   MarginTop(1)
 
-const activeButtonStyle = buttonStyle.Copy().
+const activeButtonStyle = buttonStyle.
   Foreground('#FFF7DB').
   Background('#F25D94').
   MarginRight(2).
@@ -164,13 +165,13 @@ const statusStyle = blipgloss.NewStyle().
   Padding(0, 1).
   MarginRight(1)
 
-const encodingStyle = statusNugget.Copy().
+const encodingStyle = statusNugget.
   Background('#A550DF').
   Align(blipgloss.Position.Right)
 
 const statusText = blipgloss.NewStyle().Inherit(statusBarStyle)
 
-const fishCakeStyle = statusNugget.Copy().Background('#6124DF')
+const fishCakeStyle = statusNugget.Background('#6124DF')
 
 // Page.
 
@@ -179,6 +180,10 @@ let docStyle = blipgloss.NewStyle().Padding(1, 2, 1, 2)
 function init() {
   const doc: string[] = []
   const physicalWidth = process.stdout.columns
+
+  // Test the new Go function directly
+  // const testOutput = getStringAndFreePtr(symbols.TestTabBorder(encode("Test Tab"))); // Removed test call
+  // console.log("TestTabBorder output:", testOutput); // Removed test console log
 
   // Tabs
   {
@@ -207,7 +212,7 @@ function init() {
       const c = colors[i][0]
       const marginLeft = i * offset;
 
-      title += titleStyle.Copy().MarginLeft(marginLeft).Background(c).Render('Lip Gloss')
+      title += titleStyle.MarginLeft(marginLeft).Background(c).Render('Lip Gloss')
 
       if (i < colors.length - 1) {
         title += '\n';
@@ -270,11 +275,11 @@ function init() {
           listItem("Pomelo"),
         ),
       ),
-      list.Copy().Width(columnWidth).Render(
+      list.Width(columnWidth).Render(
         blipgloss.JoinVertical(blipgloss.Position.Left,
           listHeader("Actual Lip Gloss Vendors"),
           listItem("Glossier"),
-          listItem("Claire‘s Boutique"),
+          listItem("Claire's Boutique"),
           listDone("Nyx"),
           listItem("Mac"),
           listDone("Milk"),
@@ -287,15 +292,15 @@ function init() {
 
   // Marmalade history
   {
-    const historyA = "The Romans learned from the Greeks that quinces slowly cooked with honey would “set” when cool. The Apicius gives a recipe for preserving whole quinces, stems and leaves attached, in a bath of honey diluted with defrutum: Roman marmalade. Preserves of quince and lemon appear (along with rose, apple, plum and pear) in the Book of ceremonies of the Byzantine Emperor Constantine VII Porphyrogennetos.";
-    const historyB = "Medieval quince preserves, which went by the French name cotignac, produced in a clear version and a fruit pulp version, began to lose their medieval seasoning of spices in the 16th century. In the 17th century, La Varenne provided recipes for both thick and clear cotignac.";
-    const historyC = "In 1524, Henry VIII, King of England, received a “box of marmalade” from Mr. Hull of Exeter. This was probably marmelada, a solid quince paste from Portugal, still made and sold in southern Europe today. It became a favourite treat of Anne Boleyn and her ladies in waiting.";
+    const historyA = `The Romans learned from the Greeks that quinces slowly cooked with honey would "set" when cool. The Apicius gives a recipe for preserving whole quinces, stems and leaves attached, in a bath of honey diluted with defrutum: Roman marmalade. Preserves of quince and lemon appear (along with rose, apple, plum and pear) in the Book of ceremonies of the Byzantine Emperor Constantine VII Porphyrogennetos.`;
+    const historyB = `Medieval quince preserves, which went by the French name cotignac, produced in a clear version and a fruit pulp version, began to lose their medieval seasoning of spices in the 16th century. In the 17th century, La Varenne provided recipes for both thick and clear cotignac.`;
+    const historyC = `In 1524, Henry VIII, King of England, received a "box of marmalade" from Mr. Hull of Exeter. This was probably marmelada, a solid quince paste from Portugal, still made and sold in southern Europe today. It became a favourite treat of Anne Boleyn and her ladies in waiting.`;
 
     doc.push(blipgloss.JoinHorizontal(
       blipgloss.Position.Top,
-      historyStyle.Copy().Align(blipgloss.Position.Right).Render(historyA),
-      historyStyle.Copy().Align(blipgloss.Position.Center).Render(historyB),
-      historyStyle.Copy().MarginRight(0).Render(historyC),
+      historyStyle.Align(blipgloss.Position.Right).Render(historyA),
+      historyStyle.Align(blipgloss.Position.Center).Render(historyB),
+      historyStyle.MarginRight(0).Render(historyC),
     ))
   }
 
@@ -306,7 +311,7 @@ function init() {
     const statusKey = statusStyle.Render("STATUS")
     const encoding = encodingStyle.Render("UTF-8")
     const fishCake = fishCakeStyle.Render("🍥 Fish Cake")
-    const statusVal = statusText.Copy().
+    const statusVal = statusText.
       Width(width - w(statusKey) - w(encoding) - w(fishCake)).
       Render("Ravishing")
 

@@ -29,10 +29,10 @@
   "bugs": "https://github.com/wobsoriano/blipgloss/issues",
   "author": "Robert Soriano <sorianorobertc@gmail.com>",
   "devDependencies": {
-    "@biomejs/biome": "1.2.2",
+    "@biomejs/biome": "1.9.4",
+    "@types/bun": "^1.2.15",
     "@types/color": "^3.0.4",
-    "bun-plugin-dts": "^0.2.0",
-    "bun-types": "^1.0.2",
+    "bun-plugin-dts": "^0.3.0",
     "color": "^4.2.3",
     "typescript": "^5.2.2"
   }

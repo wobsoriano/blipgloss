@@ -11,15 +11,13 @@ const output = await Bun.build({
   target: 'bun'
 })
 
-
-const XGO = path.join(process.env.HOME, 'go/bin/xgo');
-const TARGETS = 'linux/arm64,linux/amd64,darwin/arm64,darwin/amd64';
+const TARGETS = 'darwin/arm64,darwin/amd64,linux/amd64,linux/arm64,windows/amd64';
 
 if (output.success) {
   console.log('Compiling native binaries...')
   const proc = Bun.spawnSync([
-    XGO,
-    "-go", "1.20.3",
+    "xgo",
+    "-v",
     "-out", "release/blipgloss",
     `--targets=${TARGETS}`,
     "-ldflags=-s -w",

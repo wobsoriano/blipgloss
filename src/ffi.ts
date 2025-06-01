@@ -25,10 +25,6 @@ export const { symbols } = dlopen(location, {
 		args: [FFIType.ptr],
 		returns: FFIType.ptr,
 	},
-	Copy: {
-		args: [FFIType.ptr],
-		returns: FFIType.ptr,
-	},
 	SetColorValue: {
 		args: [FFIType.ptr, FFIType.ptr, FFIType.ptr, FFIType.int],
 		returns: FFIType.void,
@@ -74,7 +70,7 @@ export const { symbols } = dlopen(location, {
 		returns: FFIType.int,
 	},
 	Align: {
-		args: [FFIType.ptr, FFIType.float],
+		args: [FFIType.ptr, FFIType.f64],
 		returns: FFIType.void,
 	},
 	Margin: {

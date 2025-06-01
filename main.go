@@ -46,28 +46,21 @@ func generateUniqueId() string {
 //export NewStyle
 func NewStyle() *C.char {
 	uniqueId := generateUniqueId()
-	styleMap[uniqueId] = lipgloss.NewStyle().Copy()
+	styleMap[uniqueId] = lipgloss.NewStyle()
 	return ch(uniqueId)
 }
 
 //export Render
 func Render(keyPtr *C.char, text *C.char) *C.char {
 	style := getStyle(keyPtr)
-	return ch(style.Render(str(text)))
+	renderedText := style.Render(str(text))
+	return ch(renderedText)
 }
 
 //export String
 func String(keyPtr *C.char) *C.char {
 	key := str(keyPtr)
 	return ch(styleMap[key].String())
-}
-
-//export Copy
-func Copy(keyPtr *C.char) *C.char {
-	key := str(keyPtr)
-	uniqueId := generateUniqueId()
-	styleMap[uniqueId] = styleMap[key].Copy()
-	return ch(uniqueId)
 }
 
 //export WithWhitespaceChars
@@ -129,41 +122,49 @@ func GetColorByType(value string, colorType int) lipgloss.TerminalColor {
 
 //export SetColorValue
 func SetColorValue(fieldPtr, keyPtr, valuePtr *C.char, colorType int) {
+	styleKey := str(fieldPtr)
 	style := getStyle(fieldPtr)
 	method := str(keyPtr)
-
 	color := reflect.ValueOf(GetColorByType(str(valuePtr), colorType))
-
-	reflect.ValueOf(style).MethodByName(method).Call([]reflect.Value{color})
+	newStyle := reflect.ValueOf(style).MethodByName(method).Call([]reflect.Value{color})[0].Interface().(lipgloss.Style)
+	styleMap[styleKey] = newStyle
 }
 
 //export SetIntValue
 func SetIntValue(fieldPtr, keyPtr *C.char, value int) {
+	styleKey := str(fieldPtr)
 	style := getStyle(fieldPtr)
 	method := str(keyPtr)
 	intValue := reflect.ValueOf(value)
-	reflect.ValueOf(style).MethodByName(method).Call([]reflect.Value{intValue})
+	newStyle := reflect.ValueOf(style).MethodByName(method).Call([]reflect.Value{intValue})[0].Interface().(lipgloss.Style)
+	styleMap[styleKey] = newStyle
 }
 
 //export SetString
 func SetString(fieldPtr, valuePtr *C.char) {
+	styleKey := str(fieldPtr)
 	style := getStyle(fieldPtr)
-	style.SetString(str(valuePtr))
+	newStyle := style.SetString(str(valuePtr))
+	styleMap[styleKey] = newStyle
 }
 
 //export SetBooleanValue
 func SetBooleanValue(fieldPtr, keyPtr *C.char, value bool) {
+	styleKey := str(fieldPtr)
 	style := getStyle(fieldPtr)
 	key := str(keyPtr)
 	boolValue := reflect.ValueOf(value)
-	reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{boolValue})
+	newStyle := reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{boolValue})[0].Interface().(lipgloss.Style)
+	styleMap[styleKey] = newStyle
 }
 
 //export UnsetRule
 func UnsetRule(fieldPtr, keyPtr *C.char) {
+	styleKey := str(fieldPtr)
 	style := getStyle(fieldPtr)
 	key := str(keyPtr)
-	reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{})
+	newStyle := reflect.ValueOf(style).MethodByName(key).Call([]reflect.Value{})[0].Interface().(lipgloss.Style)
+	styleMap[styleKey] = newStyle
 }
 
 //export GetIntValue
@@ -223,34 +224,36 @@ func Height(text *C.char) int {
 
 //export Align
 func Align(fieldPtr *C.char, position float64) {
+	styleKey := str(fieldPtr)
 	style := getStyle(fieldPtr)
-	style.Align(lipgloss.Position(position))
+	newStyle := style.Align(lipgloss.Position(position))
+	styleMap[styleKey] = newStyle
 }
 
 //export Margin
 func Margin(fieldPtr *C.char, margins *C.char) {
+	styleKey := str(fieldPtr)
 	style := getStyle(fieldPtr)
 	var arr []int
 	err := json.Unmarshal([]byte(str(margins)), &arr)
-
 	if err != nil {
 		panic("Unable to parse margins")
 	}
-
-	style.Margin(arr...)
+	newStyle := style.Margin(arr...)
+	styleMap[styleKey] = newStyle
 }
 
 //export Padding
 func Padding(fieldPtr *C.char, paddings *C.char) {
+	styleKey := str(fieldPtr)
 	style := getStyle(fieldPtr)
 	var arr []int
 	err := json.Unmarshal([]byte(str(paddings)), &arr)
-
 	if err != nil {
 		panic("Unable to parse paddings")
 	}
-
-	style.Padding(arr...)
+	newStyle := style.Padding(arr...)
+	styleMap[styleKey] = newStyle
 }
 
 func GetBorderStyleByPointerValue(valuePtr *C.char) lipgloss.Border {
@@ -283,23 +286,32 @@ func GetBorderStyleByPointerValue(valuePtr *C.char) lipgloss.Border {
 
 //export Border
 func Border(fieldPtr, valuePtr *C.char, top, right, bottom, left bool) {
+	styleKey := str(fieldPtr)
 	style := getStyle(fieldPtr)
 	border := GetBorderStyleByPointerValue(valuePtr)
-	style.Border(border, top, right, bottom, left)
+
+	// Capture the new style returned by style.Border() and update the map
+	newStyle := style.Border(border, top, right, bottom, left)
+	styleMap[styleKey] = newStyle
 }
 
 //export BorderStyle
 func BorderStyle(fieldPtr, valuePtr *C.char) {
+	styleKey := str(fieldPtr)
 	style := getStyle(fieldPtr)
 	border := GetBorderStyleByPointerValue(valuePtr)
-	style.BorderStyle(border)
+	// Capture the new style returned by style.BorderStyle() and update the map
+	newStyle := style.BorderStyle(border)
+	styleMap[styleKey] = newStyle
 }
 
 //export Inherit
 func Inherit(fieldPtr, stylePtr *C.char) {
+	styleKey := str(fieldPtr)
 	style := getStyle(fieldPtr)
 	styleToInherit := getStyle(stylePtr)
-	style.Inherit(styleToInherit)
+	newStyle := style.Inherit(styleToInherit)
+	styleMap[styleKey] = newStyle
 }
 
 func ConvertStringsToWhitespaceOptions(strPtr *C.char) []lipgloss.WhitespaceOption {

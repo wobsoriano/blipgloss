@@ -1,6 +1,6 @@
 import { symbols } from './ffi';
 import { encode, getColorType, whichSidesBool } from './utils';
-import { CString, Pointer, ptr } from 'bun:ffi';
+import { CString, type Pointer, ptr } from 'bun:ffi';
 
 export type AdaptiveColor = {
 	Light: string;
@@ -54,9 +54,9 @@ export enum Border {
 export type BorderStyle = Border | CustomBorder;
 
 export class Style {
-	#handle: number;
+	#handle: Pointer;
 
-	constructor(handle: number) {
+	constructor(handle: Pointer) {
 		this.#handle = handle;
 	}
 
@@ -298,14 +298,6 @@ export class Style {
 		const textStr = new CString(textPtr);
 		symbols.FreeString(textStr.ptr);
 		return textStr.toString();
-	}
-
-	Copy() {
-		const handlerPtr = symbols.Copy(this.#handle);
-		if (!handlerPtr) {
-			throw new Error('Unable to copy style');
-		}
-		return new Style(handlerPtr);
 	}
 
 	FreeHandle() {
