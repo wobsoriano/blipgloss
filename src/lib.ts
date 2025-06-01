@@ -369,6 +369,18 @@ export class Style {
 	Underline(value: boolean) {
 		return this.SetBooleanValue('Underline', value);
 	}
+
+	Copy(): Style {
+		const newStyleIdPtr = symbols.Copy(this.#handle);
+		if (!newStyleIdPtr) {
+			throw new Error('Unable to copy style');
+		}
+
+		const newStyleId = new CString(newStyleIdPtr);
+		symbols.FreeString(newStyleIdPtr);
+
+		return new Style(newStyleId.ptr);
+	}
 }
 
 export function NewStyle() {

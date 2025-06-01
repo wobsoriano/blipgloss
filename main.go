@@ -288,6 +288,7 @@ func GetBorderStyleByPointerValue(valuePtr *C.char) lipgloss.Border {
 func Border(fieldPtr, valuePtr *C.char, top, right, bottom, left bool) {
 	styleKey := str(fieldPtr)
 	style := getStyle(fieldPtr)
+
 	border := GetBorderStyleByPointerValue(valuePtr)
 
 	// Capture the new style returned by style.Border() and update the map
@@ -312,6 +313,19 @@ func Inherit(fieldPtr, stylePtr *C.char) {
 	styleToInherit := getStyle(stylePtr)
 	newStyle := style.Inherit(styleToInherit)
 	styleMap[styleKey] = newStyle
+}
+
+//export Copy
+func Copy(fieldPtr *C.char) *C.char {
+	styleToCopy := getStyle(fieldPtr)
+
+	// In lipgloss v1, simple assignment creates a value copy (deep copy).
+	newStyle := styleToCopy
+
+	uniqueId := generateUniqueId()
+	styleMap[uniqueId] = newStyle
+
+	return ch(uniqueId)
 }
 
 func ConvertStringsToWhitespaceOptions(strPtr *C.char) []lipgloss.WhitespaceOption {

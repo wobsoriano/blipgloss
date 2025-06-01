@@ -1,8 +1,11 @@
 import * as blipgloss from '../src'
 import Color from 'color'
 import type { AdaptiveColor, CustomBorder } from '../src'
-import { encode } from '../src/utils';
 
+// In real life situations we'd adjust the document to fit the width we've
+// detected. In the case of this example we're hardcoding the width, and
+// later using the detected width only to truncate in order to avoid jaggy
+// wrapping.
 const width = 96
 const columnWidth = 30
 
@@ -20,6 +23,20 @@ const highlight: AdaptiveColor = {
 const special: AdaptiveColor = {
   Light: '#43BF6D',
   Dark: '#73F59F'
+}
+
+const rainbow = (str: string): string => {
+    let result = "";
+    const baseColor = Color('#F25D94'); // Starting color from the existing palette
+    const hueIncrement = 360 / str.length;
+
+    for (let i = 0; i < str.length; i++) {
+        const char = str[i];
+        const color = baseColor.rotate(hueIncrement * i).hex();
+        const style = blipgloss.NewStyle().Foreground(color);
+        result += style.Render(char as string);
+    }
+    return result;
 }
 
 const divider = blipgloss.NewStyle()
@@ -60,9 +77,10 @@ const tab = blipgloss.NewStyle()
   .BorderForeground(highlight)
   .Padding(0, 1)
 
-const activeTab = tab.Border(activeTabBorder, true)
+const activeTab = tab.Copy().Border(activeTabBorder, true)
 
 const tabGap = tab
+  .Copy()
   .BorderTop(false)
   .BorderLeft(false)
   .BorderRight(false)
@@ -181,10 +199,6 @@ function init() {
   const doc: string[] = []
   const physicalWidth = process.stdout.columns
 
-  // Test the new Go function directly
-  // const testOutput = getStringAndFreePtr(symbols.TestTabBorder(encode("Test Tab"))); // Removed test call
-  // console.log("TestTabBorder output:", testOutput); // Removed test console log
-
   // Tabs
   {
     let row = blipgloss.JoinHorizontal(
@@ -197,7 +211,7 @@ function init() {
     )
     const gapWidth = Math.max(0, width - blipgloss.Width(row) - 2);
     const gap = tabGap.Render(Array(gapWidth).fill(" ").join(""))
-    // console.log('gap', gap)
+
     row = blipgloss.JoinHorizontal(blipgloss.Position.Bottom, row, gap)
     doc.push(row)
   }
@@ -228,12 +242,12 @@ function init() {
     doc.push(row)
   }
 
-  // // Dialog
+  // Dialog
   {
     const okButton = activeButtonStyle.Render('Yes')
     const cancelButton = buttonStyle.Render('Maybe')
 
-    const question = blipgloss.NewStyle().Width(50).Align(blipgloss.Position.Center).Render("Are you sure you want to eat marmalade?")
+    const question = blipgloss.NewStyle().Width(50).Align(blipgloss.Position.Center).Render(rainbow("Are you sure you want to eat marmalade?"))
     const buttons = blipgloss.JoinHorizontal(blipgloss.Position.Top, okButton, cancelButton)
     const ui = blipgloss.JoinVertical(blipgloss.Position.Center, question, buttons)
 
@@ -252,7 +266,7 @@ function init() {
     const colors = (() => {
       const colors = colorGrid(14, 8);
       let b = ''
-    
+
       for (const row of colors) {
         for (const color of row) {
           const s = blipgloss.NewStyle().Background(color)
@@ -260,10 +274,10 @@ function init() {
         }
         b += '\n';
       }
-    
+
       return b;
     })();
-    
+
     const lists = blipgloss.JoinHorizontal(blipgloss.Position.Top,
       list.Render(
         blipgloss.JoinVertical(blipgloss.Position.Left,
