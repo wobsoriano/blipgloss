@@ -21,25 +21,22 @@ jobs:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
 
+      - name: Get Latest Build Run ID
+        id: get-run
+        run: |
+          LATEST_RUN=$(curl -s -H "Authorization: token ${{ secrets.GH_PAT }}" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-binaries.yml/runs?branch=${{ github.ref_name }}&status=success&per_page=1" \
+            | jq -r '.workflow_runs[0].id')
+          echo "run_id=$LATEST_RUN" >> $GITHUB_OUTPUT
+
       - name: Download Binaries Artifact
         uses: actions/download-artifact@v4
         with:
           name: blipgloss-binaries
-          run-id: 15385032374
-          github-token: ${{ github.token }}
+          path: ./release
+          run-id: ${{ steps.get-run.outputs.run_id }}
+          github-token: ${{ secrets.GH_PAT }}
           repository: ${{ github.repository }}
-
-      - name: Check Binaries Freshness
-        run: |
-          ARTIFACT_COMMIT=$(cat release/.binaries-commit)
-          CURRENT_COMMIT=${{ github.sha }}
-          if [ "$ARTIFACT_COMMIT" != "$CURRENT_COMMIT" ]; then
-            echo "Error: Binaries artifact built from commit $ARTIFACT_COMMIT does not match current commit $CURRENT_COMMIT."
-            echo "Please manually trigger the 'Build Binaries' workflow for the latest commit." >&2
-            exit 1
-          else
-            echo "Binaries artifact commit $ARTIFACT_COMMIT matches current commit. Proceeding with release."
-          fi
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2

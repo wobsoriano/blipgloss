@@ -20,9 +20,6 @@ jobs:
           ldflags: -s -w
           buildmode: c-shared
 
-      - name: Record Commit Hash
-        run: echo "${{ github.sha }}" > release/.binaries-commit
-
       - name: Upload Binaries Artifact
         uses: actions/upload-artifact@v4
         with:
