@@ -21,33 +21,29 @@ jobs:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
 
+      - name: Download Binaries Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: blipgloss-binaries
+
+      - name: Check Binaries Freshness
+        run: |
+          ARTIFACT_COMMIT=$(cat release/.binaries-commit)
+          CURRENT_COMMIT=${{ github.sha }}
+          if [ "$ARTIFACT_COMMIT" != "$CURRENT_COMMIT" ]; then
+            echo "Error: Binaries artifact built from commit $ARTIFACT_COMMIT does not match current commit $CURRENT_COMMIT."
+            echo "Please manually trigger the 'Build Binaries' workflow for the latest commit." >&2
+            exit 1
+          else
+            echo "Binaries artifact commit $ARTIFACT_COMMIT matches current commit. Proceeding with release."
+          fi
+
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
       - run: bun install
-
-      - name: Check for changesets
-        id: check
-        run: |
-          if bunx changeset status --since=main --verbose | grep -q 'Packages to be bumped'; then
-            echo "CHANGESETS_PENDING=true" >> $GITHUB_ENV
-          else
-            echo "CHANGESETS_PENDING=false" >> $GITHUB_ENV
-          fi
-
-      - name: Build with xgo
-        uses: crazy-max/ghaction-xgo@v3
-        if: env.CHANGESETS_PENDING == 'true'
-        with:
-          go_version: latest
-          targets: windows/amd64,linux/amd64,linux/arm64,darwin/arm64
-          dest: release # Output directory for binaries
-          prefix: blipgloss
-          # Add other xgo flags as needed, e.g.:
-          ldflags: -s -w
-          buildmode: c-shared
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets

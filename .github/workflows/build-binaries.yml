@@ -1,0 +1,37 @@
+name: Build Binaries
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - run: bun install
+
+      - name: Build with xgo
+        uses: crazy-max/ghaction-xgo@v3
+        with:
+          go_version: latest
+          targets: windows/amd64,linux/amd64,linux/arm64,darwin/arm64
+          dest: release # Output directory for binaries
+          prefix: blipgloss
+          ldflags: -s -w
+          buildmode: c-shared
+
+      - name: Record Commit Hash
+        run: echo "${{ github.sha }}" > release/.binaries-commit
+
+      - name: Upload Binaries Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: blipgloss-binaries
+          path: release/ 
