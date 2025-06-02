@@ -10,6 +10,12 @@ Style definitions for nice terminal layouts. Powered by [lipgloss](https://githu
 bun add blipgloss
 ```
 
+To download the correct binary, mark blipgloss as trusted dependency:
+
+```bash
+bun pm trust blipgloss
+```
+
 ## Usage
 
 Blipgloss takes an expressive, declarative approach to terminal rendering. Users familiar with CSS will feel at home with Blipgloss.
