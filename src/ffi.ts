@@ -1,4 +1,4 @@
-import { FFIType, dlopen, suffix } from 'bun:ffi';
+import { FFIType, dlopen, suffix, JSCallback } from 'bun:ffi';
 
 const { platform, arch } = process;
 
@@ -22,10 +22,6 @@ export const { symbols } = dlopen(location, {
 		returns: FFIType.ptr,
 	},
 	String: {
-		args: [FFIType.ptr],
-		returns: FFIType.ptr,
-	},
-	Copy: {
 		args: [FFIType.ptr],
 		returns: FFIType.ptr,
 	},
@@ -74,7 +70,7 @@ export const { symbols } = dlopen(location, {
 		returns: FFIType.int,
 	},
 	Align: {
-		args: [FFIType.ptr, FFIType.float],
+		args: [FFIType.ptr, FFIType.f64],
 		returns: FFIType.void,
 	},
 	Margin: {
@@ -107,6 +103,10 @@ export const { symbols } = dlopen(location, {
 	Inherit: {
 		args: [FFIType.ptr, FFIType.ptr],
 		returns: FFIType.void,
+	},
+	Copy: {
+		args: [FFIType.ptr],
+		returns: FFIType.ptr,
 	},
 	WithWhitespaceChars: {
 		args: [FFIType.ptr],

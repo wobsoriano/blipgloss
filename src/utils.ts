@@ -1,4 +1,4 @@
-import { BlipglossColor } from './lib';
+import type { BlipglossColor } from './lib';
 
 const utf8e = new TextEncoder();
 
@@ -6,36 +6,38 @@ export function encode<T>(data: T): Uint8Array {
 	return utf8e.encode(`${data}\0`);
 }
 
-export function whichSidesBool(...args: boolean[]) {
+export function whichSidesBool(
+	...args: boolean[]
+): [boolean, boolean, boolean, boolean, boolean] {
 	let [top, right, bottom, left, ok] = [false, false, false, false, false];
 
 	switch (args.length) {
 		case 1:
-			top = args[0];
-			bottom = args[0];
-			left = args[0];
-			right = args[0];
+			top = args[0] ?? false;
+			bottom = args[0] ?? false;
+			left = args[0] ?? false;
+			right = args[0] ?? false;
 			ok = true;
 			break;
 		case 2:
-			top = args[0];
-			bottom = args[0];
-			left = args[1];
-			right = args[1];
+			top = args[0] ?? false;
+			bottom = args[0] ?? false;
+			left = args[1] ?? false;
+			right = args[1] ?? false;
 			ok = true;
 			break;
 		case 3:
-			top = args[0];
-			left = args[1];
-			right = args[1];
-			bottom = args[2];
+			top = args[0] ?? false;
+			left = args[1] ?? false;
+			right = args[1] ?? false;
+			bottom = args[2] ?? false;
 			ok = true;
 			break;
 		case 4:
-			top = args[0];
-			right = args[1];
-			bottom = args[2];
-			left = args[3];
+			top = args[0] ?? false;
+			right = args[1] ?? false;
+			bottom = args[2] ?? false;
+			left = args[3] ?? false;
 			ok = true;
 			break;
 	}

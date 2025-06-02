@@ -1,7 +1,11 @@
 import * as blipgloss from '../src'
 import Color from 'color'
-import type { AdaptiveColor, CustomBorder } from '../dist'
+import type { AdaptiveColor, CustomBorder } from '../src'
 
+// In real life situations we'd adjust the document to fit the width we've
+// detected. In the case of this example we're hardcoding the width, and
+// later using the detected width only to truncate in order to avoid jaggy
+// wrapping.
 const width = 96
 const columnWidth = 30
 
@@ -19,6 +23,20 @@ const highlight: AdaptiveColor = {
 const special: AdaptiveColor = {
   Light: '#43BF6D',
   Dark: '#73F59F'
+}
+
+const rainbow = (str: string): string => {
+    let result = "";
+    const baseColor = Color('#F25D94'); // Starting color from the existing palette
+    const hueIncrement = 360 / str.length;
+
+    for (let i = 0; i < str.length; i++) {
+        const char = str[i];
+        const color = baseColor.rotate(hueIncrement * i).hex();
+        const style = blipgloss.NewStyle().Foreground(color);
+        result += style.Render(char as string);
+    }
+    return result;
 }
 
 const divider = blipgloss.NewStyle()
@@ -61,7 +79,8 @@ const tab = blipgloss.NewStyle()
 
 const activeTab = tab.Copy().Border(activeTabBorder, true)
 
-const tabGap = tab.Copy()
+const tabGap = tab
+  .Copy()
   .BorderTop(false)
   .BorderLeft(false)
   .BorderRight(false)
@@ -100,7 +119,7 @@ const buttonStyle = blipgloss.NewStyle().
   Padding(0, 3).
   MarginTop(1)
 
-const activeButtonStyle = buttonStyle.Copy().
+const activeButtonStyle = buttonStyle.
   Foreground('#FFF7DB').
   Background('#F25D94').
   MarginRight(2).
@@ -164,13 +183,13 @@ const statusStyle = blipgloss.NewStyle().
   Padding(0, 1).
   MarginRight(1)
 
-const encodingStyle = statusNugget.Copy().
+const encodingStyle = statusNugget.
   Background('#A550DF').
   Align(blipgloss.Position.Right)
 
 const statusText = blipgloss.NewStyle().Inherit(statusBarStyle)
 
-const fishCakeStyle = statusNugget.Copy().Background('#6124DF')
+const fishCakeStyle = statusNugget.Background('#6124DF')
 
 // Page.
 
@@ -192,7 +211,7 @@ function init() {
     )
     const gapWidth = Math.max(0, width - blipgloss.Width(row) - 2);
     const gap = tabGap.Render(Array(gapWidth).fill(" ").join(""))
-    // console.log('gap', gap)
+
     row = blipgloss.JoinHorizontal(blipgloss.Position.Bottom, row, gap)
     doc.push(row)
   }
@@ -207,7 +226,7 @@ function init() {
       const c = colors[i][0]
       const marginLeft = i * offset;
 
-      title += titleStyle.Copy().MarginLeft(marginLeft).Background(c).Render('Lip Gloss')
+      title += titleStyle.MarginLeft(marginLeft).Background(c).Render('Lip Gloss')
 
       if (i < colors.length - 1) {
         title += '\n';
@@ -223,12 +242,12 @@ function init() {
     doc.push(row)
   }
 
-  // // Dialog
+  // Dialog
   {
     const okButton = activeButtonStyle.Render('Yes')
     const cancelButton = buttonStyle.Render('Maybe')
 
-    const question = blipgloss.NewStyle().Width(50).Align(blipgloss.Position.Center).Render("Are you sure you want to eat marmalade?")
+    const question = blipgloss.NewStyle().Width(50).Align(blipgloss.Position.Center).Render(rainbow("Are you sure you want to eat marmalade?"))
     const buttons = blipgloss.JoinHorizontal(blipgloss.Position.Top, okButton, cancelButton)
     const ui = blipgloss.JoinVertical(blipgloss.Position.Center, question, buttons)
 
@@ -247,7 +266,7 @@ function init() {
     const colors = (() => {
       const colors = colorGrid(14, 8);
       let b = ''
-    
+
       for (const row of colors) {
         for (const color of row) {
           const s = blipgloss.NewStyle().Background(color)
@@ -255,10 +274,10 @@ function init() {
         }
         b += '\n';
       }
-    
+
       return b;
     })();
-    
+
     const lists = blipgloss.JoinHorizontal(blipgloss.Position.Top,
       list.Render(
         blipgloss.JoinVertical(blipgloss.Position.Left,
@@ -270,11 +289,11 @@ function init() {
           listItem("Pomelo"),
         ),
       ),
-      list.Copy().Width(columnWidth).Render(
+      list.Width(columnWidth).Render(
         blipgloss.JoinVertical(blipgloss.Position.Left,
           listHeader("Actual Lip Gloss Vendors"),
           listItem("Glossier"),
-          listItem("Claire‘s Boutique"),
+          listItem("Claire's Boutique"),
           listDone("Nyx"),
           listItem("Mac"),
           listDone("Milk"),
@@ -287,15 +306,15 @@ function init() {
 
   // Marmalade history
   {
-    const historyA = "The Romans learned from the Greeks that quinces slowly cooked with honey would “set” when cool. The Apicius gives a recipe for preserving whole quinces, stems and leaves attached, in a bath of honey diluted with defrutum: Roman marmalade. Preserves of quince and lemon appear (along with rose, apple, plum and pear) in the Book of ceremonies of the Byzantine Emperor Constantine VII Porphyrogennetos.";
-    const historyB = "Medieval quince preserves, which went by the French name cotignac, produced in a clear version and a fruit pulp version, began to lose their medieval seasoning of spices in the 16th century. In the 17th century, La Varenne provided recipes for both thick and clear cotignac.";
-    const historyC = "In 1524, Henry VIII, King of England, received a “box of marmalade” from Mr. Hull of Exeter. This was probably marmelada, a solid quince paste from Portugal, still made and sold in southern Europe today. It became a favourite treat of Anne Boleyn and her ladies in waiting.";
+    const historyA = `The Romans learned from the Greeks that quinces slowly cooked with honey would "set" when cool. The Apicius gives a recipe for preserving whole quinces, stems and leaves attached, in a bath of honey diluted with defrutum: Roman marmalade. Preserves of quince and lemon appear (along with rose, apple, plum and pear) in the Book of ceremonies of the Byzantine Emperor Constantine VII Porphyrogennetos.`;
+    const historyB = `Medieval quince preserves, which went by the French name cotignac, produced in a clear version and a fruit pulp version, began to lose their medieval seasoning of spices in the 16th century. In the 17th century, La Varenne provided recipes for both thick and clear cotignac.`;
+    const historyC = `In 1524, Henry VIII, King of England, received a "box of marmalade" from Mr. Hull of Exeter. This was probably marmelada, a solid quince paste from Portugal, still made and sold in southern Europe today. It became a favourite treat of Anne Boleyn and her ladies in waiting.`;
 
     doc.push(blipgloss.JoinHorizontal(
       blipgloss.Position.Top,
-      historyStyle.Copy().Align(blipgloss.Position.Right).Render(historyA),
-      historyStyle.Copy().Align(blipgloss.Position.Center).Render(historyB),
-      historyStyle.Copy().MarginRight(0).Render(historyC),
+      historyStyle.Align(blipgloss.Position.Right).Render(historyA),
+      historyStyle.Align(blipgloss.Position.Center).Render(historyB),
+      historyStyle.MarginRight(0).Render(historyC),
     ))
   }
 
@@ -306,7 +325,7 @@ function init() {
     const statusKey = statusStyle.Render("STATUS")
     const encoding = encodingStyle.Render("UTF-8")
     const fishCake = fishCakeStyle.Render("🍥 Fish Cake")
-    const statusVal = statusText.Copy().
+    const statusVal = statusText.
       Width(width - w(statusKey) - w(encoding) - w(fishCake)).
       Render("Ravishing")
 

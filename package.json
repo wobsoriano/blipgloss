@@ -1,17 +1,18 @@
 {
   "name": "blipgloss",
+  "description": "Style definitions for nice terminal layouts.",
   "version": "0.3.0",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "description": "",
   "scripts": {
-    "build": "bun run ./build.mjs",
-    "build:go": "./build.sh",
-    "release": "bumpp --commit --push --tag && npm publish",
-    "prepublishOnly": "bun run build",
-    "lint": "biome check src",
-    "format": "biome format src --write",
-    "test": "bun wiptest"
+    "build:lib": "bun run ./scripts/build-lib.ts",
+    "build:binaries": "bun run ./scripts/build-binaries.ts",
+    "prepublishOnly": "bun run build:lib",
+    "release": "changeset publish",
+    "lint": "bunx biome lint --write ./src",
+    "format": "biome format src --write ./src",
+    "test": "bun test"
   },
   "files": [
     "dist",
@@ -29,10 +30,11 @@
   "bugs": "https://github.com/wobsoriano/blipgloss/issues",
   "author": "Robert Soriano <sorianorobertc@gmail.com>",
   "devDependencies": {
-    "@biomejs/biome": "1.2.2",
+    "@biomejs/biome": "1.9.4",
+    "@changesets/cli": "^2.29.4",
+    "@types/bun": "^1.2.15",
     "@types/color": "^3.0.4",
-    "bun-plugin-dts": "^0.2.0",
-    "bun-types": "^1.0.2",
+    "bun-plugin-dts": "^0.3.0",
     "color": "^4.2.3",
     "typescript": "^5.2.2"
   }
