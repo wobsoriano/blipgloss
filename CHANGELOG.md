@@ -1,5 +1,11 @@
 # blipgloss
 
+## 0.4.2
+
+### Patch Changes
+
+- 6cb1b2e: Test conditional xgo workflow
+
 ## 0.4.1
 
 ### Patch Changes
