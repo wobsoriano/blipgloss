@@ -12,11 +12,12 @@
     "release": "changeset publish",
     "lint": "bunx biome lint --write ./src",
     "format": "biome format src --write ./src",
-    "test": "bun test"
+    "test": "bun test",
+    "postinstall": "bun run ./scripts/postinstall.ts"
   },
   "files": [
     "dist",
-    "release"
+    "scripts"
   ],
   "keywords": [
     "bun"

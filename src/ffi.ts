@@ -1,13 +1,13 @@
-import { FFIType, dlopen, suffix, JSCallback } from 'bun:ffi';
+import { FFIType, dlopen, suffix } from 'bun:ffi';
 
 const { platform, arch } = process;
 
 let filename: string;
 
 if (arch === 'x64') {
-	filename = `../release/blipgloss-${platform}-amd64.${suffix}`;
+	filename = `../bin/blipgloss-${platform}-amd64.${suffix}`;
 } else {
-	filename = `../release/blipgloss-${platform}-${arch}.${suffix}`;
+	filename = `../bin/blipgloss-${platform}-${arch}.${suffix}`;
 }
 
 const location = new URL(filename, import.meta.url).pathname;

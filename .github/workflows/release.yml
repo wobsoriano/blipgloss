@@ -50,7 +50,7 @@ jobs:
         with:
           go_version: latest
           targets: windows/amd64,linux/amd64,linux/arm64,darwin/arm64
-          dest: release # Output directory for binaries
+          dest: bin # Output directory for binaries
           prefix: blipgloss
           ldflags: -s -w
           buildmode: c-shared
@@ -61,6 +61,6 @@ jobs:
         with:
           tag_name: ${{ steps.get-release.outputs.tag }}
           files: |
-            release/*
+            bin/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
