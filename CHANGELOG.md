@@ -1,5 +1,11 @@
 # blipgloss
 
+## 0.4.5
+
+### Patch Changes
+
+- a51f3f7: Remove unused scripts and files
+
 ## 0.4.4
 
 ### Patch Changes
