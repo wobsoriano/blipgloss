@@ -3,6 +3,12 @@ import { suffix } from 'bun:ffi';
 const { platform, arch } = process;
 
 async function downloadBinary() {
+  // Skip download in CI environments
+  if (process.env.CI) {
+    console.log('Skipping binary download in CI environment');
+    return;
+  }
+  
   const platformKey = `${platform}-${arch === 'x64' ? 'amd64' : arch}.${suffix}`;
   if (!platformKey) {
     console.error(`Unsupported platform: ${platform}-${arch}`);
