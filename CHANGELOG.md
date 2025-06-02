@@ -1,5 +1,11 @@
 # blipgloss
 
+## 0.4.3
+
+### Patch Changes
+
+- 1b50953: Test release workflow
+
 ## 0.4.2
 
 ### Patch Changes
