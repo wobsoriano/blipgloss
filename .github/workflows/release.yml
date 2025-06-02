@@ -26,6 +26,7 @@ jobs:
           go_version: latest
           targets: windows/amd64,linux/amd64,linux/arm64,darwin/arm64
           dest: release # Output directory for binaries
+          prefix: blipgloss
           # Add other xgo flags as needed, e.g.:
           ldflags: -s -w
           buildmode: c-shared
