@@ -3,6 +3,3 @@ dist
 .DS_Store
 release
 bin
-
-scripts/build-binaries.ts
-scripts/build-lib.ts

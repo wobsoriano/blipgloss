@@ -17,7 +17,7 @@
   },
   "files": [
     "dist",
-    "scripts"
+    "scripts/postinstall.ts"
   ],
   "keywords": [
     "bun"
