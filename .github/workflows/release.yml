@@ -20,9 +20,26 @@ jobs:
         with:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - run: bun install
+
+      - name: Check for changesets
+        id: check
+        run: |
+          if bunx changeset status --since=main --verbose | grep -q 'Packages to be bumped'; then
+            echo "CHANGESETS_PENDING=true" >> $GITHUB_ENV
+          else
+            echo "CHANGESETS_PENDING=false" >> $GITHUB_ENV
+          fi
+
       - name: Build with xgo
         uses: crazy-max/ghaction-xgo@v3
-        if: steps.changesets.outputs.published == 'true'
+        if: env.CHANGESETS_PENDING == 'true'
         with:
           go_version: latest
           targets: windows/amd64,linux/amd64,linux/arm64,darwin/arm64
@@ -31,12 +48,6 @@ jobs:
           # Add other xgo flags as needed, e.g.:
           ldflags: -s -w
           buildmode: c-shared
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
-      - run: bun install
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
