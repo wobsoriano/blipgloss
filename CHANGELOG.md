@@ -1,5 +1,11 @@
 # blipgloss
 
+## 0.4.4
+
+### Patch Changes
+
+- f639b34: Improve release workflow
+
 ## 0.4.3
 
 ### Patch Changes
