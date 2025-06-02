@@ -2,4 +2,4 @@
 "blipgloss": patch
 ---
 
-Test conditional xgo workflow
+Test release workflow
