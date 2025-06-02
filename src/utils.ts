@@ -6,7 +6,9 @@ export function encode<T>(data: T): Uint8Array {
 	return utf8e.encode(`${data}\0`);
 }
 
-export function whichSidesBool(...args: boolean[]): [boolean, boolean, boolean, boolean, boolean] {
+export function whichSidesBool(
+	...args: boolean[]
+): [boolean, boolean, boolean, boolean, boolean] {
 	let [top, right, bottom, left, ok] = [false, false, false, false, false];
 
 	switch (args.length) {

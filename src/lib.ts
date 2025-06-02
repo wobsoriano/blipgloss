@@ -240,8 +240,9 @@ export class Style {
 	}
 
 	BorderStyle(style: BorderStyle) {
-    const styleString = typeof style === 'string' ? style : JSON.stringify(style)
-    symbols.BorderStyle(this.#handle, ptr(encode(styleString)));
+		const styleString =
+			typeof style === 'string' ? style : JSON.stringify(style);
+		symbols.BorderStyle(this.#handle, ptr(encode(styleString)));
 		return this;
 	}
 
