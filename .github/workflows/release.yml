@@ -26,7 +26,8 @@ jobs:
         with:
           name: blipgloss-binaries
           run-id: ${{ github.event.workflow_run.id }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ github.token }}
+          github-repository: ${{ github.repository }}
 
       - name: Check Binaries Freshness
         run: |
