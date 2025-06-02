@@ -10,13 +10,6 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
-      - run: bun install
-
       - name: Build with xgo
         uses: crazy-max/ghaction-xgo@v3
         with:

@@ -25,6 +25,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: blipgloss-binaries
+          path: ./release
+          run-id: ${{ github.event.workflow_run.id }}
 
       - name: Check Binaries Freshness
         run: |
