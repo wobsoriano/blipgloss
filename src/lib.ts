@@ -377,9 +377,13 @@ export class Style {
 		}
 
 		const newStyleId = new CString(newStyleIdPtr);
-		symbols.FreeString(newStyleIdPtr);
+		// symbols.FreeString(newStyleIdPtr);
 
 		return new Style(newStyleId.ptr);
+	}
+
+	getHandle(): Pointer {
+		return this.#handle;
 	}
 }
 
