@@ -1,5 +1,11 @@
 # blipgloss
 
+## 0.4.6
+
+### Patch Changes
+
+- 1c54079: Skip download if binary already exists
+
 ## 0.4.5
 
 ### Patch Changes
