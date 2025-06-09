@@ -16,11 +16,15 @@ async function downloadBinary() {
   }
 
   const { version } = await Bun.file('package.json').json();
-  console.log(version)
   const binaryName = `blipgloss-${platformKey}`;
-  const url = `https://github.com/wobsoriano/blipgloss/releases/download/v${version}/${binaryName}`;
-
   const outputPath = `bin/${binaryName}`;
+
+  // Check if binary already exists
+  if (await Bun.file(outputPath).exists()) {
+    return;
+  }
+
+  const url = `https://github.com/wobsoriano/blipgloss/releases/download/v${version}/${binaryName}`;
 
   console.log(`Downloading ${binaryName} for ${platformKey}...`);
 
