@@ -1,6 +1,9 @@
 import { suffix } from 'bun:ffi';
 
-const { platform, arch } = process;
+let { platform } = process;
+const { arch } = process;
+
+platform = (platform === "win32") ? "windows" : platform;
 
 async function downloadBinary() {
   // Skip download in CI environments
