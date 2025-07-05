@@ -2,6 +2,10 @@
 
 Style definitions for nice terminal layouts. Powered by [lipgloss](https://github.com/charmbracelet/lipgloss) and `bun:ffi`.
 
+> [!WARNING]
+> This package is not recommended for production use.
+> Use this repository as inspiration for connecting Go with Bun via FFI and for implementing automatic deployment workflows.
+
 ![Blipgloss example](https://i.imgur.com/zW4nYM5.png)
 
 ## Install
