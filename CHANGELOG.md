@@ -1,5 +1,11 @@
 # blipgloss
 
+## 0.4.7
+
+### Patch Changes
+
+- 2e81e6d: Use correct variables for windows
+
 ## 0.4.6
 
 ### Patch Changes
