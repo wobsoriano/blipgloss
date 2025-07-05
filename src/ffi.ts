@@ -1,21 +1,24 @@
 import { FFIType, dlopen, suffix } from 'bun:ffi';
 
-let { platform } = process;
-const { arch } = process;
+function getBinaryLocation() {
+	const { platform } = process;
+	const { arch } = process;
 
-platform = (platform === "win32") : "windows" ? platform;
+	// See https://github.com/wobsoriano/blipgloss/pull/14
+	const finalPlatform = platform === 'win32' ? 'windows' : platform;
 
-let filename: string;
+	let filename: string;
 
-if (arch === 'x64') {
-	filename = `../bin/blipgloss-${platform}-amd64.${suffix}`;
-} else {
-	filename = `../bin/blipgloss-${platform}-${arch}.${suffix}`;
+	if (arch === 'x64') {
+		filename = `../bin/blipgloss-${finalPlatform}-amd64.${suffix}`;
+	} else {
+		filename = `../bin/blipgloss-${finalPlatform}-${arch}.${suffix}`;
+	}
+
+	return new URL(filename, import.meta.url).pathname;
 }
 
-const location = new URL(filename, import.meta.url).pathname;
-
-export const { symbols } = dlopen(location, {
+export const { symbols } = dlopen(getBinaryLocation(), {
 	NewStyle: {
 		args: [],
 		returns: FFIType.ptr,
